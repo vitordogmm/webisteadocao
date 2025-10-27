@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,7 +18,7 @@ import {
   Filter
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -159,7 +160,7 @@ const ShelterDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <AnimatedNavigation />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground">Painel do Canil</h1>
@@ -191,9 +192,9 @@ const ShelterDashboard = () => {
           </Card>
           <Card className="bg-background">
             <CardContent className="p-6 text-center">
-              <Heart className="h-10 w-10 mx-auto text-primary mb-2" />
-              <p className="text-2xl font-bold text-foreground">{stats.adoptedAnimals}</p>
-              <p className="text-gray-600 dark:text-gray-300">Animais Adotados</p>
+              <MessageCircle className="h-10 w-10 mx-auto text-primary mb-2" />
+              <p className="text-2xl font-bold text-foreground">5</p>
+              <p className="text-gray-600 dark:text-gray-300">Mensagens Não Lidas</p>
             </CardContent>
           </Card>
         </div>
@@ -203,7 +204,12 @@ const ShelterDashboard = () => {
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="animals">Animais</TabsTrigger>
             <TabsTrigger value="applications">Solicitações</TabsTrigger>
-            <TabsTrigger value="messages">Mensagens</TabsTrigger>
+            <TabsTrigger value="messages">
+              Mensagens
+              <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
+                5
+              </Badge>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -481,8 +487,10 @@ const ShelterDashboard = () => {
               <CardContent>
                 <div className="text-center py-8">
                   <MessageCircle className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300">Você não tem mensagens novas</p>
-                  <p className="text-sm text-gray-500 mt-2 dark:text-gray-400">As mensagens aparecerão aqui quando você receber uma solicitação de adoção</p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">Você tem 5 mensagens não lidas</p>
+                  <Button asChild className="bg-primary hover:bg-primary/90">
+                    <Link to="/messages">Ver Todas as Mensagens</Link>
+                  </Button>
                 </div>
               </CardContent>
             </Card>
