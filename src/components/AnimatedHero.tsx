@@ -36,11 +36,11 @@ const AnimatedHero = () => {
   };
 
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-20 overflow-hidden z-30">
       {/* Hero Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black z-10" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-20">
         <motion.div
           className="text-center max-w-3xl mx-auto"
           variants={containerVariants}
@@ -48,14 +48,14 @@ const AnimatedHero = () => {
           animate="visible"
         >
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-orange-400 to-white bg-clip-text text-transparent"
+            className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-orange-400 to-white bg-clip-text text-transparent drop-shadow-lg"
             variants={itemVariants}
           >
             Encontre seu novo melhor amigo
           </motion.h1>
           
           <motion.p 
-            className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
+            className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto drop-shadow-md"
             variants={itemVariants}
           >
             Conectamos animais em situação de abandono com famílias amorosas. Adote, não compre.
