@@ -202,6 +202,17 @@ const Catalog = () => {
     }
   };
 
+  const checkboxVariants = {
+    checked: { scale: 1.1 },
+    unchecked: { scale: 1 }
+  };
+
+  const buttonVariants = {
+    rest: { scale: 1 },
+    hover: { scale: 1.03 },
+    tap: { scale: 0.98 }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <AnimatedNavigation />
@@ -287,22 +298,44 @@ const Catalog = () => {
                 <motion.div variants={itemVariants}>
                   <Label className="text-base">Sexo</Label>
                   <div className="flex gap-4 mt-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="macho" 
-                        checked={filters.gender === "macho"}
-                        onCheckedChange={(checked) => handleGenderChange("macho", !!checked)} 
-                      />
+                    <motion.div 
+                      className="flex items-center space-x-2"
+                      whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                      whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <motion.div
+                        animate={filters.gender === "macho" ? "checked" : "unchecked"}
+                        variants={!reducedMotion ? checkboxVariants : {}}
+                        transition={{ type: "spring", stiffness: 500 }}
+                      >
+                        <Checkbox 
+                          id="macho" 
+                          checked={filters.gender === "macho"}
+                          onCheckedChange={(checked) => handleGenderChange("macho", !!checked)} 
+                        />
+                      </motion.div>
                       <label htmlFor="macho" className="text-foreground">Macho</label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox 
-                        id="femea" 
-                        checked={filters.gender === "femea"}
-                        onCheckedChange={(checked) => handleGenderChange("femea", !!checked)} 
-                      />
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center space-x-2"
+                      whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                      whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                      transition={{ type: "spring", stiffness: 400 }}
+                    >
+                      <motion.div
+                        animate={filters.gender === "femea" ? "checked" : "unchecked"}
+                        variants={!reducedMotion ? checkboxVariants : {}}
+                        transition={{ type: "spring", stiffness: 500 }}
+                      >
+                        <Checkbox 
+                          id="femea" 
+                          checked={filters.gender === "femea"}
+                          onCheckedChange={(checked) => handleGenderChange("femea", !!checked)} 
+                        />
+                      </motion.div>
                       <label htmlFor="femea" className="text-foreground">Fêmea</label>
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
                 
@@ -320,12 +353,26 @@ const Catalog = () => {
                   className="flex gap-2"
                   variants={itemVariants}
                 >
-                  <Button className="w-full bg-primary hover:bg-primary/90">
-                    Aplicar Filtros
-                  </Button>
-                  <Button variant="outline" onClick={clearFilters}>
-                    Limpar
-                  </Button>
+                  <motion.div
+                    variants={!reducedMotion ? buttonVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Button className="w-full bg-primary hover:bg-primary/90">
+                      Aplicar Filtros
+                    </Button>
+                  </motion.div>
+                  <motion.div
+                    variants={!reducedMotion ? buttonVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Button variant="outline" onClick={clearFilters}>
+                      Limpar
+                    </Button>
+                  </motion.div>
                 </motion.div>
               </div>
             </Card>
@@ -372,9 +419,15 @@ const Catalog = () => {
                     ? `Não encontramos animais para "${searchQuery}" com os filtros selecionados.` 
                     : "Não há animais disponíveis com os filtros selecionados."}
                 </p>
-                <Button onClick={clearFilters} variant="outline">
-                  Limpar filtros
-                </Button>
+                <motion.div
+                  whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                  whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
+                  <Button onClick={clearFilters} variant="outline">
+                    Limpar filtros
+                  </Button>
+                </motion.div>
               </motion.div>
             )}
           </div>
