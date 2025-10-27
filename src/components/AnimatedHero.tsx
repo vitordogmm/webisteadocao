@@ -36,8 +36,11 @@ const AnimatedHero = () => {
   };
 
   return (
-    <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-20 dark:from-gray-800 dark:to-gray-900">
-      <div className="container mx-auto px-4">
+    <section className="relative py-20 overflow-hidden">
+      {/* Hero Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           className="text-center max-w-3xl mx-auto"
           variants={containerVariants}
@@ -45,14 +48,14 @@ const AnimatedHero = () => {
           animate="visible"
         >
           <motion.h1 
-            className="text-4xl md:text-6xl font-bold text-gray-800 mb-6 dark:text-white"
+            className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-orange-400 to-white bg-clip-text text-transparent"
             variants={itemVariants}
           >
             Encontre seu novo melhor amigo
           </motion.h1>
           
           <motion.p 
-            className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto dark:text-gray-300"
+            className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
             variants={itemVariants}
           >
             Conectamos animais em situação de abandono com famílias amorosas. Adote, não compre.
@@ -68,7 +71,7 @@ const AnimatedHero = () => {
               whileTap={!reducedMotion ? "tap" : {}}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+              <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white border-2 border-orange-500 hover:border-orange-600 shadow-lg hover:shadow-orange-500/25">
                 <Link to="/catalog">Ver Animais Disponíveis</Link>
               </Button>
             </motion.div>
@@ -79,7 +82,7 @@ const AnimatedHero = () => {
               whileTap={!reducedMotion ? "tap" : {}}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white hover:border-orange-500">
                 <Link to="/how-to-adopt">Como Adotar</Link>
               </Button>
             </motion.div>

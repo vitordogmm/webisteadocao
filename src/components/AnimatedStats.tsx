@@ -11,19 +11,19 @@ const AnimatedStats = () => {
       icon: Heart,
       value: 1248,
       label: "Animais Adotados",
-      color: "text-red-500"
+      color: "text-orange-500"
     },
     {
       icon: Users,
       value: 86,
       label: "Canis Parceiros",
-      color: "text-blue-500"
+      color: "text-orange-400"
     },
     {
       icon: PawPrint,
       value: 324,
       label: "Animais Disponíveis",
-      color: "text-green-500"
+      color: "text-orange-600"
     }
   ];
 
@@ -63,8 +63,11 @@ const AnimatedStats = () => {
   };
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <section className="py-16 relative">
+      {/* Section Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
           variants={containerVariants}
@@ -81,7 +84,7 @@ const AnimatedStats = () => {
                 whileHover={!reducedMotion ? { y: -10 } : {}}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="text-center bg-background">
+                <Card className="text-center bg-gray-900/80 backdrop-blur-sm border-gray-800 hover:border-orange-500/50 transition-all duration-300">
                   <CardHeader>
                     <CardTitle className="flex flex-col items-center">
                       <motion.div
@@ -91,7 +94,7 @@ const AnimatedStats = () => {
                         <Icon className={`h-12 w-12 ${stat.color} mb-4`} />
                       </motion.div>
                       <motion.span 
-                        className="text-3xl font-bold text-gray-800 dark:text-white"
+                        className="text-3xl font-bold text-white"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 + index * 0.2 }}
@@ -101,7 +104,7 @@ const AnimatedStats = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 dark:text-gray-300">{stat.label}</p>
+                    <p className="text-gray-300">{stat.label}</p>
                   </CardContent>
                 </Card>
               </motion.div>
