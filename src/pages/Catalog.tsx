@@ -12,6 +12,7 @@ import AnimatedNavigation from "@/components/AnimatedNavigation";
 import AnimatedAnimalCard from "@/components/AnimatedAnimalCard";
 import { useAnimation } from "@/contexts/AnimationContext";
 import { fetchStates, fetchCities, IBGEState, IBGECity } from "@/services/ibgeService";
+import { Autocomplete } from "@/components/ui/autocomplete";
 
 const Catalog = () => {
   const { reducedMotion } = useAnimation();
@@ -129,8 +130,6 @@ const Catalog = () => {
         const citiesData = await fetchCities(filters.state);
         setCities(citiesData);
         setLoadingCities(false);
-        // Reset city filter when state changes
-        setFilters(prev => ({ ...prev, city: "" }));
       } else {
         setCities([]);
       }
@@ -457,34 +456,18 @@ const Catalog = () => {
                 <motion.div variants={itemVariants}>
                   <Label className="text-base">Cidade</Label>
                   <motion.div
-                    variants={!reducedMotion ? selectVariants : {}}
-                    whileHover={!reducedMotion ? "hover" : {}}
-                    whileTap={!reducedMotion ? "tap" : {}}
-                    transition={{ type: "spring", stiffness: 400 }}
+                    variants={!reducedMotion ? inputVariants : {}}
+                    whileFocus={!reducedMotion ? "focus" : {}}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Select 
-                      value={filters.city} 
+                    <Autocomplete
+                      options={cities}
+                      value={filters.city}
                       onValueChange={(value) => handleFilterChange("city", value)}
-                      disabled={loadingCities || !filters.state}
-                    >
-                      <SelectTrigger>
-                        {loadingCities ? (
-                          <div className="flex items-center">
-                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                            Carregando...
-                          </div>
-                        ) : (
-                          <SelectValue placeholder={filters.state ? "Selecione uma cidade" : "Selecione um estado primeiro"} />
-                        )}
-                      </SelectTrigger>
-                      <SelectContent>
-                        {cities.map((city) => (
-                          <SelectItem key={city.id} value={city.nome}>
-                            {city.nome}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      placeholder={filters.state ? "Digite o nome da cidade..." : "Selecione um estado primeiro"}
+                      loading={loadingCities}
+                      disabled={!filters.state}
+                    />
                   </motion.div>
                 </motion.div>
                 
