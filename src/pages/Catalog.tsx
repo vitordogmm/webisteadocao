@@ -1,15 +1,19 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, MapPin, Filter } from "lucide-react";
+import { Heart, MapPin, Filter, Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import Navigation from "@/components/Navigation";
+import AnimatedNavigation from "@/components/AnimatedNavigation";
+import AnimatedAnimalCard from "@/components/AnimatedAnimalCard";
+import { useAnimation } from "@/contexts/AnimationContext";
 
 const Catalog = () => {
+  const { reducedMotion } = useAnimation();
   // Filter states
   const [filters, setFilters] = useState({
     species: "",
@@ -97,6 +101,7 @@ const Catalog = () => {
   ]);
 
   const [filteredAnimals, setFilteredAnimals] = useState(animals);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Apply filters whenever filters change
   useEffect(() => {
@@ -137,8 +142,18 @@ const Catalog = () => {
       );
     }
     
+    // Search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(animal => 
+        animal.name.toLowerCase().includes(query) ||
+        animal.breed.toLowerCase().includes(query) ||
+        animal.description.toLowerCase().includes(query)
+      );
+    }
+    
     setFilteredAnimals(result);
-  }, [filters, animals]);
+  }, [filters, animals, searchQuery]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -161,15 +176,52 @@ const Catalog = () => {
       location: "",
       shelter: ""
     });
+    setSearchQuery("");
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      <AnimatedNavigation />
       <div className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <h1 className="text-3xl font-bold text-foreground mb-6">Animais Disponíveis para Adoção</h1>
+        </motion.div>
+        
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className="w-full md:w-1/4">
+          <motion.div
+            className="w-full md:w-1/4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+          >
             <Card className="p-6">
               <div className="flex items-center gap-2 mb-6">
                 <Filter className="h-5 w-5" />
@@ -177,7 +229,20 @@ const Catalog = () => {
               </div>
               
               <div className="space-y-6">
-                <div>
+                <motion.div variants={itemVariants}>
+                  <Label className="text-base">Buscar</Label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
+                    <Input
+                      placeholder="Nome, raça ou descrição..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 bg-background"
+                    />
+                  </div>
+                </motion.div>
+                
+                <motion.div variants={itemVariants}>
                   <Label className="text-base">Espécie</Label>
                   <Select value={filters.species} onValueChange={(value) => handleFilterChange("species", value)}>
                     <SelectTrigger>
@@ -188,9 +253,9 @@ const Catalog = () => {
                       <SelectItem value="gato">Gato</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <Label className="text-base">Porte</Label>
                   <Select value={filters.size} onValueChange={(value) => handleFilterChange("size", value)}>
                     <SelectTrigger>
@@ -202,9 +267,9 @@ const Catalog = () => {
                       <SelectItem value="grande">Grande</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <Label className="text-base">Idade</Label>
                   <Select value={filters.age} onValueChange={(value) => handleFilterChange("age", value)}>
                     <SelectTrigger>
@@ -217,9 +282,9 @@ const Catalog = () => {
                       <SelectItem value="idoso">Idoso (+8 anos)</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <Label className="text-base">Sexo</Label>
                   <div className="flex gap-4 mt-2">
                     <div className="flex items-center space-x-2">
@@ -239,9 +304,9 @@ const Catalog = () => {
                       <label htmlFor="femea" className="text-foreground">Fêmea</label>
                     </div>
                   </div>
-                </div>
+                </motion.div>
                 
-                <div>
+                <motion.div variants={itemVariants}>
                   <Label className="text-base">Localização</Label>
                   <Input 
                     placeholder="Cidade, Estado" 
@@ -249,79 +314,68 @@ const Catalog = () => {
                     onChange={(e) => handleFilterChange("location", e.target.value)}
                     className="bg-background"
                   />
-                </div>
+                </motion.div>
                 
-                <div className="flex gap-2">
-                  <Button className="w-full bg-primary hover:bg-primary/90" onClick={() => {}}>
+                <motion.div 
+                  className="flex gap-2"
+                  variants={itemVariants}
+                >
+                  <Button className="w-full bg-primary hover:bg-primary/90">
                     Aplicar Filtros
                   </Button>
                   <Button variant="outline" onClick={clearFilters}>
                     Limpar
                   </Button>
-                </div>
+                </motion.div>
               </div>
             </Card>
-          </div>
+          </motion.div>
           
           {/* Animals Grid */}
           <div className="w-full md:w-3/4">
-            <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold text-foreground">Animais Disponíveis para Adoção</h1>
-              <p className="text-gray-600 dark:text-gray-300">{filteredAnimals.length} animais encontrados</p>
-            </div>
+            <motion.div
+              className="flex justify-between items-center mb-6"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+            >
+              <h2 className="text-2xl font-bold text-foreground">
+                {searchQuery ? `Resultados para "${searchQuery}"` : "Todos os Animais"}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300">
+                {filteredAnimals.length} {filteredAnimals.length === 1 ? "animal encontrado" : "animais encontrados"}
+              </p>
+            </motion.div>
             
             {filteredAnimals.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredAnimals.map((animal) => (
-                  <Card key={animal.id} className="overflow-hidden bg-background">
-                    <CardHeader className="p-0">
-                      <img 
-                        src={animal.image} 
-                        alt={animal.name} 
-                        className="w-full h-48 object-cover"
-                      />
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-xl font-bold text-foreground">{animal.name}</h3>
-                          <p className="text-gray-600 dark:text-gray-300">{animal.breed}</p>
-                        </div>
-                        <Button variant="ghost" size="icon">
-                          <Heart className="h-5 w-5" />
-                        </Button>
-                      </div>
-                      
-                      <div className="mt-4 space-y-2">
-                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                          <span>{animal.age}</span>
-                          <span className="mx-2">•</span>
-                          <span>{animal.size}</span>
-                          <span className="mx-2">•</span>
-                          <span>{animal.gender}</span>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          <span>{animal.location}</span>
-                        </div>
-                        <p className="text-sm mt-2 text-foreground">{animal.description}</p>
-                      </div>
-                    </CardContent>
-                    <CardFooter className="p-4 pt-0">
-                      <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                        <Link to={`/animal/${animal.id}`}>Quero Adotar</Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
+              <motion.div 
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {filteredAnimals.map((animal, index) => (
+                  <AnimatedAnimalCard key={animal.id} animal={animal} index={index} />
                 ))}
-              </div>
+              </motion.div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-xl text-foreground mb-4">Nenhum animal encontrado com os filtros selecionados</p>
+              <motion.div 
+                className="text-center py-12"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Heart className="h-16 w-16 mx-auto text-gray-400 mb-4" />
+                <h3 className="text-xl font-bold text-foreground mb-2">Nenhum animal encontrado</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  {searchQuery 
+                    ? `Não encontramos animais para "${searchQuery}" com os filtros selecionados.` 
+                    : "Não há animais disponíveis com os filtros selecionados."}
+                </p>
                 <Button onClick={clearFilters} variant="outline">
                   Limpar filtros
                 </Button>
-              </div>
+              </motion.div>
             )}
           </div>
         </div>
