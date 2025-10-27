@@ -59,18 +59,58 @@ const AnimatedNavigation = () => {
     visible: { opacity: 1, x: 0 }
   };
 
+  const pawPrintVariants = {
+    hidden: { scale: 0, opacity: 0 },
+    visible: { 
+      scale: 1, 
+      opacity: 0.2,
+      transition: { 
+        type: "spring", 
+        stiffness: 300,
+        delay: 0.3
+      }
+    }
+  };
+
   return (
-    <header className="bg-background border-b">
-      <div className="container mx-auto px-4">
+    <header className="bg-background border-b relative overflow-hidden">
+      {/* Decorative paw prints background */}
+      <motion.div 
+        className="absolute top-2 right-10 opacity-10 hidden md:block"
+        initial="hidden"
+        animate="visible"
+        variants={!reducedMotion ? pawPrintVariants : {}}
+      >
+        <PawPrint className="w-8 h-8 text-primary" />
+      </motion.div>
+      
+      <motion.div 
+        className="absolute bottom-2 left-20 opacity-10 hidden md:block"
+        initial="hidden"
+        animate="visible"
+        variants={!reducedMotion ? pawPrintVariants : {}}
+        transition={{ delay: 0.5 }}
+      >
+        <PawPrint className="w-6 h-6 text-primary" />
+      </motion.div>
+      
+      <div className="container mx-auto px-4 relative">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+            whileTap={!reducedMotion ? { scale: 0.95 } : {}}
           >
             <Link to="/" className="flex items-center space-x-2">
-              <PawPrint className="h-8 w-8 text-primary" />
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 5 }}
+              >
+                <PawPrint className="h-8 w-8 text-primary" />
+              </motion.div>
               <span className="text-xl font-bold">AdotaPet</span>
             </Link>
           </motion.div>
@@ -79,6 +119,8 @@ const AnimatedNavigation = () => {
           <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => {
               const Icon = item.icon;
+              const isCurrent = isActive(item.path);
+              
               return (
                 <motion.div
                   key={item.path}
@@ -90,17 +132,28 @@ const AnimatedNavigation = () => {
                     ease: "easeOut",
                     delay: reducedMotion ? 0 : index * 0.1
                   }}
+                  whileHover={!reducedMotion ? { y: -2 } : {}}
+                  whileTap={!reducedMotion ? { scale: 0.95 } : {}}
                 >
                   <Link
                     to={item.path}
-                    className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${
-                      isActive(item.path)
+                    className={`px-3 py-2 rounded-md text-sm font-medium flex items-center transition-all ${
+                      isCurrent
                         ? "bg-primary/10 text-primary"
                         : "text-foreground hover:bg-muted"
                     }`}
                   >
                     <Icon className="h-4 w-4 mr-2" />
                     {item.name}
+                    {isCurrent && (
+                      <motion.div 
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                        layoutId="navIndicator"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    )}
                   </Link>
                 </motion.div>
               );
@@ -112,25 +165,59 @@ const AnimatedNavigation = () => {
             <ThemeToggle />
             {userNavItems.map((item) => {
               const Icon = item.icon;
+              const isCurrent = isActive(item.path);
+              
               return (
-                <Button
+                <motion.div
                   key={item.path}
-                  variant={isAuthenticated ? "ghost" : "default"}
-                  asChild
-                  size="sm"
+                  whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                  whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                  transition={{ type: "spring", stiffness: 400 }}
                 >
-                  <Link to={item.path}>
-                    <Icon className="h-4 w-4 mr-2" />
-                    {item.name}
-                  </Link>
-                </Button>
+                  <Button
+                    key={item.path}
+                    variant={isAuthenticated ? "ghost" : "default"}
+                    asChild
+                    size="sm"
+                    className="relative"
+                  >
+                    <Link to={item.path}>
+                      <Icon className="h-4 w-4 mr-2" />
+                      {item.name}
+                      {isCurrent && (
+                        <motion.div 
+                          className="absolute -top-1 -right-1"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.2, type: "spring" }}
+                        >
+                          <PawPrint className="w-3 h-3 text-primary" />
+                        </motion.div>
+                      )}
+                    </Link>
+                  </Button>
+                </motion.div>
               );
             })}
             {isAuthenticated && (
-              <Button variant="outline" size="sm">
-                <LogOut className="h-4 w-4 mr-2" />
-                Sair
-              </Button>
+              <motion.div
+                whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <Button variant="outline" size="sm" className="relative group">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Sair
+                  <motion.div 
+                    className="absolute -top-1 -right-1 opacity-0 group-hover:opacity-100"
+                    initial={{ scale: 0 }}
+                    whileHover={{ scale: 1 }}
+                    transition={{ type: "spring" }}
+                  >
+                    <PawPrint className="w-3 h-3 text-primary" />
+                  </motion.div>
+                </Button>
+              </motion.div>
             )}
           </div>
 
@@ -139,10 +226,15 @@ const AnimatedNavigation = () => {
             <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Abrir menu</span>
-                </Button>
+                <motion.div
+                  whileHover={!reducedMotion ? { scale: 1.1 } : {}}
+                  whileTap={!reducedMotion ? { scale: 0.9 } : {}}
+                >
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Abrir menu</span>
+                  </Button>
+                </motion.div>
               </SheetTrigger>
               <SheetContent side="right">
                 <div className="flex items-center justify-between mb-6">
