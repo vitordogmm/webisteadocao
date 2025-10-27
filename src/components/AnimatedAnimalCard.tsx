@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MapPin } from "lucide-react";
+import { Heart, MapPin, PawPrint } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAnimation } from "@/contexts/AnimationContext";
 
@@ -49,6 +49,11 @@ const AnimatedAnimalCard = ({ animal, index }: AnimatedAnimalCardProps) => {
     rest: { scale: 1 },
     hover: { scale: 1.05 },
     tap: { scale: 0.95 }
+  };
+
+  const handleAdoptClick = () => {
+    // In a real app, this would trigger the adoption process
+    console.log(`Adoption requested for ${animal.name}`);
   };
 
   return (
@@ -112,8 +117,22 @@ const AnimatedAnimalCard = ({ animal, index }: AnimatedAnimalCardProps) => {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
             className="w-full"
           >
-            <Button asChild className="w-full bg-primary hover:bg-primary/90">
-              <Link to={`/animal/${animal.id}`}>Quero Adotar</Link>
+            <Button 
+              asChild 
+              className="w-full bg-primary hover:bg-primary/90 relative"
+              onClick={handleAdoptClick}
+            >
+              <Link to={`/animal/${animal.id}`}>
+                Quero Adotar
+                <motion.div 
+                  className="absolute -top-2 -right-2"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                >
+                  <PawPrint className="w-4 h-4 text-white" />
+                </motion.div>
+              </Link>
             </Button>
           </motion.div>
         </CardFooter>

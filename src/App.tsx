@@ -15,6 +15,7 @@ import About from "./pages/About";
 import AdopterDashboard from "./pages/AdopterDashboard";
 import ShelterDashboard from "./pages/ShelterDashboard";
 import CanilRegistration from "./pages/CanilRegistration";
+import AdoptionSuccess from "./pages/AdoptionSuccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/adopter-dashboard" element={<AdopterDashboard />} />
               <Route path="/shelter-dashboard" element={<ShelterDashboard />} />
               <Route path="/canil-registration" element={<CanilRegistration />} />
+              <Route path="/adoption-success" element={<AdoptionSuccess />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
