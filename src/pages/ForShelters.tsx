@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, Shield, Users, Heart, FileText, Calendar, MessageCircle, BarChart } from "lucide-react";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 
 const ForShelters = () => {
@@ -191,7 +192,9 @@ const ForShelters = () => {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto dark:text-gray-300">
             Junte-se à nossa comunidade de canis e abrigos comprometidos com o bem-estar animal.
           </p>
-          <Button size="lg" className="bg-primary hover:bg-primary/90">Cadastre seu Canil</Button>
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+            <Link to="/canil-registration">Cadastre seu Canil</Link>
+          </Button>
         </div>
       </div>
     </div>
