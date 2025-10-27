@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Heart, MessageCircle, FileText, Calendar, CheckCircle, Clock, XCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const AdopterDashboard = () => {
   const [activeTab, setActiveTab] = useState("favorites");
@@ -67,11 +68,12 @@ const AdopterDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Painel do Adotante</h1>
-          <p className="text-gray-600">Gerencie seus favoritos e acompanhe suas solicitações de adoção</p>
+          <h1 className="text-3xl font-bold text-foreground">Painel do Adotante</h1>
+          <p className="text-gray-600 dark:text-gray-300">Gerencie seus favoritos e acompanhe suas solicitações de adoção</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -82,9 +84,9 @@ const AdopterDashboard = () => {
           </TabsList>
 
           <TabsContent value="favorites">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-foreground">
                   <Heart className="h-5 w-5 mr-2" />
                   Animais Favoritos
                 </CardTitle>
@@ -93,7 +95,7 @@ const AdopterDashboard = () => {
                 {favorites.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {favorites.map((animal) => (
-                      <Card key={animal.id}>
+                      <Card key={animal.id} className="bg-background">
                         <CardContent className="flex items-center p-4">
                           <img 
                             src={animal.image} 
@@ -101,11 +103,11 @@ const AdopterDashboard = () => {
                             className="w-16 h-16 rounded-lg object-cover mr-4"
                           />
                           <div className="flex-1">
-                            <h3 className="font-bold">{animal.name}</h3>
-                            <p className="text-sm text-gray-600">{animal.breed}, {animal.age}</p>
-                            <p className="text-sm text-gray-600">{animal.shelter}</p>
+                            <h3 className="font-bold text-foreground">{animal.name}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{animal.breed}, {animal.age}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">{animal.shelter}</p>
                           </div>
-                          <Button asChild size="sm">
+                          <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
                             <Link to={`/animal/${animal.id}`}>Ver Perfil</Link>
                           </Button>
                         </CardContent>
@@ -115,8 +117,8 @@ const AdopterDashboard = () => {
                 ) : (
                   <div className="text-center py-8">
                     <Heart className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600">Você ainda não tem animais favoritos</p>
-                    <Button asChild className="mt-4">
+                    <p className="text-gray-600 dark:text-gray-300">Você ainda não tem animais favoritos</p>
+                    <Button asChild className="mt-4 bg-primary hover:bg-primary/90">
                       <Link to="/catalog">Ver Animais Disponíveis</Link>
                     </Button>
                   </div>
@@ -126,9 +128,9 @@ const AdopterDashboard = () => {
           </TabsContent>
 
           <TabsContent value="applications">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-foreground">
                   <FileText className="h-5 w-5 mr-2" />
                   Solicitações de Adoção
                 </CardTitle>
@@ -137,12 +139,12 @@ const AdopterDashboard = () => {
                 {applications.length > 0 ? (
                   <div className="space-y-4">
                     {applications.map((app) => (
-                      <Card key={app.id}>
+                      <Card key={app.id} className="bg-background">
                         <CardContent className="p-4">
                           <div className="flex justify-between items-center">
                             <div>
-                              <h3 className="font-bold">{app.animalName}</h3>
-                              <p className="text-sm text-gray-600">{app.shelter}</p>
+                              <h3 className="font-bold text-foreground">{app.animalName}</h3>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">{app.shelter}</p>
                               <div className="flex items-center text-sm text-gray-500 mt-1">
                                 <Calendar className="h-4 w-4 mr-1" />
                                 <span>{app.date}</span>
@@ -163,8 +165,8 @@ const AdopterDashboard = () => {
                 ) : (
                   <div className="text-center py-8">
                     <FileText className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600">Você ainda não fez nenhuma solicitação de adoção</p>
-                    <Button asChild className="mt-4">
+                    <p className="text-gray-600 dark:text-gray-300">Você ainda não fez nenhuma solicitação de adoção</p>
+                    <Button asChild className="mt-4 bg-primary hover:bg-primary/90">
                       <Link to="/catalog">Ver Animais Disponíveis</Link>
                     </Button>
                   </div>
@@ -174,9 +176,9 @@ const AdopterDashboard = () => {
           </TabsContent>
 
           <TabsContent value="messages">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-foreground">
                   <MessageCircle className="h-5 w-5 mr-2" />
                   Mensagens
                 </CardTitle>
@@ -184,8 +186,8 @@ const AdopterDashboard = () => {
               <CardContent>
                 <div className="text-center py-8">
                   <MessageCircle className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600">Você não tem mensagens novas</p>
-                  <p className="text-sm text-gray-500 mt-2">As mensagens aparecerão aqui quando você enviar uma solicitação de adoção</p>
+                  <p className="text-gray-600 dark:text-gray-300">Você não tem mensagens novas</p>
+                  <p className="text-sm text-gray-500 mt-2 dark:text-gray-400">As mensagens aparecerão aqui quando você enviar uma solicitação de adoção</p>
                 </div>
               </CardContent>
             </Card>

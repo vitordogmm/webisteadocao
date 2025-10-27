@@ -14,6 +14,7 @@ import {
   PawPrint
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,12 +47,12 @@ const Navigation = () => {
   };
 
   return (
-    <header className="bg-white border-b">
+    <header className="bg-background border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <PawPrint className="h-8 w-8 text-blue-600" />
+            <PawPrint className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold">AdotaPet</span>
           </Link>
 
@@ -65,8 +66,8 @@ const Navigation = () => {
                   to={item.path}
                   className={`px-3 py-2 rounded-md text-sm font-medium flex items-center ${
                     isActive(item.path)
-                      ? "bg-blue-100 text-blue-700"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground hover:bg-muted"
                   }`}
                 >
                   <Icon className="h-4 w-4 mr-2" />
@@ -78,6 +79,7 @@ const Navigation = () => {
 
           {/* User Navigation */}
           <div className="hidden md:flex items-center space-x-2">
+            <ThemeToggle />
             {userNavItems.map((item) => {
               const Icon = item.icon;
               return (
@@ -103,7 +105,8 @@ const Navigation = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -114,7 +117,7 @@ const Navigation = () => {
               <SheetContent side="right">
                 <div className="flex items-center justify-between mb-6">
                   <Link to="/" className="flex items-center space-x-2" onClick={() => setIsOpen(false)}>
-                    <PawPrint className="h-8 w-8 text-blue-600" />
+                    <PawPrint className="h-8 w-8 text-primary" />
                     <span className="text-xl font-bold">AdotaPet</span>
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
@@ -131,8 +134,8 @@ const Navigation = () => {
                         to={item.path}
                         className={`px-3 py-2 rounded-md text-base font-medium flex items-center ${
                           isActive(item.path)
-                            ? "bg-blue-100 text-blue-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                            ? "bg-primary/10 text-primary"
+                            : "text-foreground hover:bg-muted"
                         }`}
                         onClick={() => setIsOpen(false)}
                       >
@@ -151,8 +154,8 @@ const Navigation = () => {
                           to={item.path}
                           className={`px-3 py-2 rounded-md text-base font-medium flex items-center ${
                             isActive(item.path)
-                              ? "bg-blue-100 text-blue-700"
-                              : "text-gray-700 hover:bg-gray-100"
+                              ? "bg-primary/10 text-primary"
+                              : "text-foreground hover:bg-muted"
                           }`}
                           onClick={() => setIsOpen(false)}
                         >

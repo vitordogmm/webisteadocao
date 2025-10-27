@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Phone, Mail, Globe, Users, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const ShelterProfile = () => {
   // Mock data for shelter
@@ -67,10 +68,11 @@ const ShelterProfile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
         {/* Shelter Header */}
-        <Card className="mb-8">
+        <Card className="mb-8 bg-background">
           <CardContent className="p-0">
             <img 
               src={shelter.images[0]} 
@@ -83,38 +85,38 @@ const ShelterProfile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Shelter Info */}
           <div className="lg:col-span-2">
-            <Card className="mb-8">
+            <Card className="mb-8 bg-background">
               <CardHeader>
-                <h1 className="text-3xl font-bold">{shelter.name}</h1>
+                <h1 className="text-3xl font-bold text-foreground">{shelter.name}</h1>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h2 className="text-xl font-semibold mb-4">Sobre Nós</h2>
-                    <p className="text-gray-700 mb-4">{shelter.description}</p>
-                    <h3 className="font-semibold mb-2">Missão</h3>
-                    <p className="text-gray-700">{shelter.mission}</p>
+                    <h2 className="text-xl font-semibold mb-4 text-foreground">Sobre Nós</h2>
+                    <p className="text-foreground mb-4">{shelter.description}</p>
+                    <h3 className="font-semibold mb-2 text-foreground">Missão</h3>
+                    <p className="text-foreground">{shelter.mission}</p>
                   </div>
                   
                   <div>
-                    <h2 className="text-xl font-semibold mb-4">Informações de Contato</h2>
+                    <h2 className="text-xl font-semibold mb-4 text-foreground">Informações de Contato</h2>
                     <div className="space-y-3">
-                      <div className="flex items-center">
+                      <div className="flex items-center text-foreground">
                         <MapPin className="h-5 w-5 mr-3 text-gray-500" />
                         <div>
                           <p>{shelter.address}</p>
                           <p>{shelter.location}</p>
                         </div>
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-center text-foreground">
                         <Phone className="h-5 w-5 mr-3 text-gray-500" />
                         <span>{shelter.phone}</span>
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-center text-foreground">
                         <Mail className="h-5 w-5 mr-3 text-gray-500" />
                         <span>{shelter.email}</span>
                       </div>
-                      <div className="flex items-center">
+                      <div className="flex items-center text-foreground">
                         <Globe className="h-5 w-5 mr-3 text-gray-500" />
                         <span>{shelter.website}</span>
                       </div>
@@ -126,25 +128,25 @@ const ShelterProfile = () => {
             
             {/* Shelter Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <Card>
+              <Card className="bg-background">
                 <CardContent className="p-6 text-center">
-                  <Users className="h-10 w-10 mx-auto text-blue-500 mb-2" />
-                  <p className="text-2xl font-bold">{shelter.animalsAdopted}</p>
-                  <p className="text-gray-600">Animais Adotados</p>
+                  <Users className="h-10 w-10 mx-auto text-primary mb-2" />
+                  <p className="text-2xl font-bold text-foreground">{shelter.animalsAdopted}</p>
+                  <p className="text-gray-600 dark:text-gray-300">Animais Adotados</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="bg-background">
                 <CardContent className="p-6 text-center">
-                  <Calendar className="h-10 w-10 mx-auto text-green-500 mb-2" />
-                  <p className="text-2xl font-bold">{shelter.founded}</p>
-                  <p className="text-gray-600">Ano de Fundação</p>
+                  <Calendar className="h-10 w-10 mx-auto text-primary mb-2" />
+                  <p className="text-2xl font-bold text-foreground">{shelter.founded}</p>
+                  <p className="text-gray-600 dark:text-gray-300">Ano de Fundação</p>
                 </CardContent>
               </Card>
-              <Card>
+              <Card className="bg-background">
                 <CardContent className="p-6 text-center">
-                  <Users className="h-10 w-10 mx-auto text-purple-500 mb-2" />
-                  <p className="text-2xl font-bold">{shelter.animalsAvailable}</p>
-                  <p className="text-gray-600">Animais Disponíveis</p>
+                  <Users className="h-10 w-10 mx-auto text-primary mb-2" />
+                  <p className="text-2xl font-bold text-foreground">{shelter.animalsAvailable}</p>
+                  <p className="text-gray-600 dark:text-gray-300">Animais Disponíveis</p>
                 </CardContent>
               </Card>
             </div>
@@ -152,13 +154,13 @@ const ShelterProfile = () => {
             {/* Animals Available */}
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Animais Disponíveis</h2>
+                <h2 className="text-2xl font-bold text-foreground">Animais Disponíveis</h2>
                 <Button variant="outline">Ver Todos</Button>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {animals.map((animal) => (
-                  <Card key={animal.id}>
+                  <Card key={animal.id} className="bg-background">
                     <CardHeader className="p-0">
                       <img 
                         src={animal.image} 
@@ -167,14 +169,14 @@ const ShelterProfile = () => {
                       />
                     </CardHeader>
                     <CardContent className="p-4">
-                      <h3 className="text-xl font-bold">{animal.name}</h3>
-                      <p className="text-gray-600">{animal.breed}</p>
+                      <h3 className="text-xl font-bold text-foreground">{animal.name}</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{animal.breed}</p>
                       <div className="flex justify-between mt-2">
                         <Badge variant="secondary">{animal.age}</Badge>
                         <Badge variant="secondary">{animal.size}</Badge>
                         <Badge variant="secondary">{animal.gender}</Badge>
                       </div>
-                      <Button asChild className="w-full mt-4">
+                      <Button asChild className="w-full mt-4 bg-primary hover:bg-primary/90">
                         <Link to={`/animal/${animal.id}`}>Conhecer</Link>
                       </Button>
                     </CardContent>
@@ -186,9 +188,9 @@ const ShelterProfile = () => {
           
           {/* Sidebar */}
           <div>
-            <Card className="mb-6">
+            <Card className="mb-6 bg-background">
               <CardHeader>
-                <CardTitle>Galeria</CardTitle>
+                <CardTitle className="text-foreground">Galeria</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-2">
@@ -204,9 +206,9 @@ const ShelterProfile = () => {
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle>Redes Sociais</CardTitle>
+                <CardTitle className="text-foreground">Redes Sociais</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">

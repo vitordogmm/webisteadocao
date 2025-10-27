@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle, FileText, HeartHandshake, Home, Phone, UserCheck } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const HowToAdopt = () => {
   const steps = [
@@ -14,7 +15,7 @@ const HowToAdopt = () => {
     },
     {
       id: 2,
-      icon: <Heart className="h-8 w-8" />,
+      icon: <HeartHandshake className="h-8 w-8" />,
       title: "Procure por um Animal",
       description: "Navegue pelo nosso catálogo e encontre o animal que combina com seu perfil e estilo de vida."
     },
@@ -61,29 +62,30 @@ const HowToAdopt = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Como Adotar</h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <h1 className="text-4xl font-bold mb-4 text-foreground">Como Adotar</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto dark:text-gray-300">
             Adotar um animal é um ato de amor que transforma vidas. Conheça o passo a passo para adotar seu novo amigo.
           </p>
         </div>
 
         {/* Steps */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-10">Passo a Passo</h2>
+          <h2 className="text-3xl font-bold text-center mb-10 text-foreground">Passo a Passo</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {steps.map((step) => (
-              <Card key={step.id} className="text-center">
+              <Card key={step.id} className="text-center bg-background">
                 <CardHeader>
-                  <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 dark:bg-blue-900">
                     {step.icon}
                   </div>
-                  <CardTitle className="text-xl">0{step.id}. {step.title}</CardTitle>
+                  <CardTitle className="text-xl text-foreground">0{step.id}. {step.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600">{step.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{step.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -94,11 +96,11 @@ const HowToAdopt = () => {
 
         {/* Requirements */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-10">Requisitos para Adoção</h2>
+          <h2 className="text-3xl font-bold text-center mb-10 text-foreground">Requisitos para Adoção</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-foreground">
                   <CheckCircle className="h-6 w-6 mr-2 text-green-500" />
                   Requisitos Gerais
                 </CardTitle>
@@ -108,16 +110,16 @@ const HowToAdopt = () => {
                   {requirements.map((req, index) => (
                     <li key={index} className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" />
-                      <span>{req}</span>
+                      <span className="text-foreground">{req}</span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <CardTitle className="flex items-center text-foreground">
                   <FileText className="h-6 w-6 mr-2 text-blue-500" />
                   Documentos Necessários
                 </CardTitle>
@@ -127,7 +129,7 @@ const HowToAdopt = () => {
                   {documents.map((doc, index) => (
                     <li key={index} className="flex items-start">
                       <FileText className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
-                      <span>{doc}</span>
+                      <span className="text-foreground">{doc}</span>
                     </li>
                   ))}
                 </ul>
@@ -140,33 +142,33 @@ const HowToAdopt = () => {
 
         {/* Additional Info */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-10">Informações Importantes</h2>
+          <h2 className="text-3xl font-bold text-center mb-10 text-foreground">Informações Importantes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle>Compromissos Pós-Adoção</CardTitle>
+                <CardTitle className="text-foreground">Compromissos Pós-Adoção</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">
+                <p className="mb-4 text-foreground">
                   Após a adoção, você assume o compromisso de cuidar do animal por toda a sua vida, 
                   proporcionando amor, cuidados veterinários, alimentação adequada e um lar seguro.
                 </p>
-                <p>
+                <p className="text-foreground">
                   O canil pode fazer visitas de acompanhamento para garantir o bem-estar do animal.
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle>Direitos e Responsabilidades</CardTitle>
+                <CardTitle className="text-foreground">Direitos e Responsabilidades</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4">
+                <p className="mb-4 text-foreground">
                   Você tem o direito de receber informações verdadeiras sobre o histórico do animal, 
                   incluindo saúde, comportamento e necessidades especiais.
                 </p>
-                <p>
+                <p className="text-foreground">
                   Você deve comprometer-se a não abandonar o animal e a procurar ajuda profissional 
                   sempre que necessário.
                 </p>
@@ -177,11 +179,11 @@ const HowToAdopt = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-6">Pronto para Adotar?</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold mb-6 text-foreground">Pronto para Adotar?</h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto dark:text-gray-300">
             Junte-se a milhares de pessoas que já transformaram suas vidas ao adotar um animal.
           </p>
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
             <Link to="/catalog">Ver Animais Disponíveis</Link>
           </Button>
         </div>

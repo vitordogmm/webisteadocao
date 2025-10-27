@@ -8,6 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Heart, MapPin, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const Catalog = () => {
   const [filters, setFilters] = useState({
@@ -76,8 +77,9 @@ const Catalog = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters Sidebar */}
           <div className="w-full md:w-1/4">
@@ -136,11 +138,11 @@ const Catalog = () => {
                   <div className="flex gap-4 mt-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox id="macho" onCheckedChange={(checked) => handleFilterChange("gender", checked ? "macho" : "")} />
-                      <label htmlFor="macho">Macho</label>
+                      <label htmlFor="macho" className="text-foreground">Macho</label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Checkbox id="femea" onCheckedChange={(checked) => handleFilterChange("gender", checked ? "femea" : "")} />
-                      <label htmlFor="femea">Fêmea</label>
+                      <label htmlFor="femea" className="text-foreground">Fêmea</label>
                     </div>
                   </div>
                 </div>
@@ -151,10 +153,11 @@ const Catalog = () => {
                     placeholder="Cidade, Estado" 
                     value={filters.location}
                     onChange={(e) => handleFilterChange("location", e.target.value)}
+                    className="bg-background"
                   />
                 </div>
                 
-                <Button className="w-full">Aplicar Filtros</Button>
+                <Button className="w-full bg-primary hover:bg-primary/90">Aplicar Filtros</Button>
               </div>
             </Card>
           </div>
@@ -162,13 +165,13 @@ const Catalog = () => {
           {/* Animals Grid */}
           <div className="w-full md:w-3/4">
             <div className="flex justify-between items-center mb-6">
-              <h1 className="text-2xl font-bold">Animais Disponíveis para Adoção</h1>
-              <p className="text-gray-600">{animals.length} animais encontrados</p>
+              <h1 className="text-2xl font-bold text-foreground">Animais Disponíveis para Adoção</h1>
+              <p className="text-gray-600 dark:text-gray-300">{animals.length} animais encontrados</p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {animals.map((animal) => (
-                <Card key={animal.id} className="overflow-hidden">
+                <Card key={animal.id} className="overflow-hidden bg-background">
                   <CardHeader className="p-0">
                     <img 
                       src={animal.image} 
@@ -179,8 +182,8 @@ const Catalog = () => {
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-bold">{animal.name}</h3>
-                        <p className="text-gray-600">{animal.breed}</p>
+                        <h3 className="text-xl font-bold text-foreground">{animal.name}</h3>
+                        <p className="text-gray-600 dark:text-gray-300">{animal.breed}</p>
                       </div>
                       <Button variant="ghost" size="icon">
                         <Heart className="h-5 w-5" />
@@ -188,22 +191,22 @@ const Catalog = () => {
                     </div>
                     
                     <div className="mt-4 space-y-2">
-                      <div className="flex items-center text-sm text-gray-600">
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                         <span>{animal.age}</span>
                         <span className="mx-2">•</span>
                         <span>{animal.size}</span>
                         <span className="mx-2">•</span>
                         <span>{animal.gender}</span>
                       </div>
-                      <div className="flex items-center text-sm text-gray-600">
+                      <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                         <MapPin className="h-4 w-4 mr-1" />
                         <span>{animal.location}</span>
                       </div>
-                      <p className="text-sm mt-2">{animal.description}</p>
+                      <p className="text-sm mt-2 text-foreground">{animal.description}</p>
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">
-                    <Button asChild className="w-full">
+                    <Button asChild className="w-full bg-primary hover:bg-primary/90">
                       <Link to={`/animal/${animal.id}`}>Quero Adotar</Link>
                     </Button>
                   </CardFooter>

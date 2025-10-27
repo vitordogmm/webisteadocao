@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Heart, MapPin, Calendar, Ruler, VenetianMask, Phone, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
 
 const AnimalProfile = () => {
   // Mock data for animal
@@ -35,12 +36,13 @@ const AnimalProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Animal Images */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="bg-background">
               <CardContent className="p-0">
                 <img 
                   src={animal.images[0]} 
@@ -52,7 +54,7 @@ const AnimalProfile = () => {
             
             <div className="grid grid-cols-3 gap-4 mt-4">
               {animal.images.slice(1).map((image, index) => (
-                <Card key={index}>
+                <Card key={index} className="bg-background">
                   <CardContent className="p-0">
                     <img 
                       src={image} 
@@ -67,12 +69,12 @@ const AnimalProfile = () => {
           
           {/* Animal Info */}
           <div>
-            <Card className="mb-6">
+            <Card className="mb-6 bg-background">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <h1 className="text-3xl font-bold">{animal.name}</h1>
-                    <p className="text-gray-600">{animal.breed}</p>
+                    <h1 className="text-3xl font-bold text-foreground">{animal.name}</h1>
+                    <p className="text-gray-600 dark:text-gray-300">{animal.breed}</p>
                   </div>
                   <Button variant="ghost" size="icon">
                     <Heart className="h-6 w-6" />
@@ -81,19 +83,19 @@ const AnimalProfile = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <Calendar className="h-5 w-5 mr-2" />
                     <span>{animal.age}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <Ruler className="h-5 w-5 mr-2" />
                     <span>{animal.size} • {animal.weight}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <VenetianMask className="h-5 w-5 mr-2" />
                     <span>{animal.gender}</span>
                   </div>
-                  <div className="flex items-center text-gray-600">
+                  <div className="flex items-center text-gray-600 dark:text-gray-300">
                     <MapPin className="h-5 w-5 mr-2" />
                     <span>{animal.location}</span>
                   </div>
@@ -102,7 +104,7 @@ const AnimalProfile = () => {
                 <Separator className="my-4" />
                 
                 <div className="mb-4">
-                  <h3 className="font-semibold mb-2">Personalidade</h3>
+                  <h3 className="font-semibold mb-2 text-foreground">Personalidade</h3>
                   <div className="flex flex-wrap gap-2">
                     {animal.personality.map((trait, index) => (
                       <Badge key={index} variant="secondary">{trait}</Badge>
@@ -111,7 +113,7 @@ const AnimalProfile = () => {
                 </div>
                 
                 <div className="mb-6">
-                  <h3 className="font-semibold mb-2">Saúde</h3>
+                  <h3 className="font-semibold mb-2 text-foreground">Saúde</h3>
                   <div className="flex flex-wrap gap-2">
                     {animal.health.map((status, index) => (
                       <Badge key={index} variant="outline">{status}</Badge>
@@ -119,19 +121,19 @@ const AnimalProfile = () => {
                   </div>
                 </div>
                 
-                <Button className="w-full mb-4">Quero Adotar</Button>
+                <Button className="w-full mb-4 bg-primary hover:bg-primary/90">Quero Adotar</Button>
                 <Button variant="outline" className="w-full">Salvar Animal</Button>
               </CardContent>
             </Card>
             
             {/* Shelter Info */}
-            <Card>
+            <Card className="bg-background">
               <CardHeader>
-                <CardTitle>Canil Responsável</CardTitle>
+                <CardTitle className="text-foreground">Canil Responsável</CardTitle>
               </CardHeader>
               <CardContent>
-                <h3 className="font-semibold text-lg mb-2">{animal.shelter.name}</h3>
-                <div className="space-y-2 text-sm text-gray-600">
+                <h3 className="font-semibold text-lg mb-2 text-foreground">{animal.shelter.name}</h3>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2" />
                     <span>{animal.shelter.location}</span>
@@ -155,12 +157,12 @@ const AnimalProfile = () => {
         
         {/* Animal Description */}
         <div className="mt-8">
-          <Card>
+          <Card className="bg-background">
             <CardHeader>
-              <CardTitle>Sobre {animal.name}</CardTitle>
+              <CardTitle className="text-foreground">Sobre {animal.name}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-700">{animal.description}</p>
+              <p className="text-foreground">{animal.description}</p>
             </CardContent>
           </Card>
         </div>
