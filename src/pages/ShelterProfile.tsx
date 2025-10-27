@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Globe, Users, Calendar, Heart, PawPrint } from "lucide-react";
+import { MapPin, Phone, Mail, Globe, Users, Calendar, Heart, PawPrint, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { useAnimation } from "@/contexts/AnimationContext";
@@ -21,11 +21,11 @@ const ShelterProfile = () => {
     address: "Rua dos Animais, 123 - Vila Mascote",
     phone: "(11) 99999-9999",
     email: "contato@abrigodoamor.com.br",
-    website: "www.abrigodoamor.com.br",
+    website: "https://www.abrigodoamor.com.br",
     socialMedia: {
-      facebook: "abrigodoamor",
-      instagram: "abrigodoamor",
-      whatsapp: "(11) 99999-9999"
+      facebook: "https://www.facebook.com/abrigodoamor",
+      instagram: "https://www.instagram.com/abrigodoamor",
+      whatsapp: "https://wa.me/5511999999999"
     },
     founded: "2010",
     animalsAdopted: 2156,
@@ -221,11 +221,28 @@ const ShelterProfile = () => {
                         </div>
                         <div className="flex items-center text-foreground">
                           <Mail className="h-5 w-5 mr-3 text-gray-500" />
-                          <span>{shelter.email}</span>
+                          <a 
+                            href={`mailto:${shelter.email}`}
+                            className="text-primary hover:underline"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              window.location.href = `mailto:${shelter.email}`;
+                            }}
+                          >
+                            {shelter.email}
+                          </a>
                         </div>
                         <div className="flex items-center text-foreground">
                           <Globe className="h-5 w-5 mr-3 text-gray-500" />
-                          <span>{shelter.website}</span>
+                          <a 
+                            href={shelter.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline flex items-center"
+                          >
+                            {shelter.website.replace("https://www.", "").replace("https://", "")}
+                            <ExternalLink className="h-3 w-3 ml-1" />
+                          </a>
                         </div>
                       </div>
                     </motion.div>
@@ -406,8 +423,20 @@ const ShelterProfile = () => {
                     whileTap={!reducedMotion ? "tap" : {}}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <Button variant="outline" className="w-full justify-start">
-                      <span className="font-medium">Facebook:</span> {shelter.socialMedia.facebook}
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <a 
+                        href={shelter.socialMedia.facebook}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        <span className="font-medium">Facebook</span>
+                        <ExternalLink className="h-3 w-3 ml-2" />
+                      </a>
                     </Button>
                   </motion.div>
                   <motion.div
@@ -416,8 +445,20 @@ const ShelterProfile = () => {
                     whileTap={!reducedMotion ? "tap" : {}}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <Button variant="outline" className="w-full justify-start">
-                      <span className="font-medium">Instagram:</span> @{shelter.socialMedia.instagram}
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <a 
+                        href={shelter.socialMedia.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        <span className="font-medium">Instagram</span>
+                        <ExternalLink className="h-3 w-3 ml-2" />
+                      </a>
                     </Button>
                   </motion.div>
                   <motion.div
@@ -426,8 +467,20 @@ const ShelterProfile = () => {
                     whileTap={!reducedMotion ? "tap" : {}}
                     transition={{ type: "spring", stiffness: 400 }}
                   >
-                    <Button variant="outline" className="w-full justify-start">
-                      <span className="font-medium">WhatsApp:</span> {shelter.socialMedia.whatsapp}
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      asChild
+                    >
+                      <a 
+                        href={shelter.socialMedia.whatsapp}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        <span className="font-medium">WhatsApp</span>
+                        <ExternalLink className="h-3 w-3 ml-2" />
+                      </a>
                     </Button>
                   </motion.div>
                 </div>
