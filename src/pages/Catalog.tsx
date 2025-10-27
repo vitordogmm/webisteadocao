@@ -6,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, MapPin, Filter, Search } from "lucide-react";
+import { Heart, MapPin, Filter, Search, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import AnimatedAnimalCard from "@/components/AnimatedAnimalCard";
 import { useAnimation } from "@/contexts/AnimationContext";
+import { fetchStates, fetchCities, IBGEState, IBGECity } from "@/services/ibgeService";
 
 const Catalog = () => {
   const { reducedMotion } = useAnimation();
@@ -20,9 +21,14 @@ const Catalog = () => {
     size: "",
     age: "",
     gender: "",
-    location: "",
-    shelter: ""
+    state: "",
+    city: ""
   });
+
+  const [states, setStates] = useState<IBGEState[]>([]);
+  const [cities, setCities] = useState<IBGECity[]>([]);
+  const [loadingStates, setLoadingStates] = useState(true);
+  const [loadingCities, setLoadingCities] = useState(false);
 
   // Mock data for animals
   const [animals] = useState([
@@ -103,6 +109,36 @@ const Catalog = () => {
   const [filteredAnimals, setFilteredAnimals] = useState(animals);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Fetch states on component mount
+  useEffect(() => {
+    const loadStates = async () => {
+      setLoadingStates(true);
+      const statesData = await fetchStates();
+      setStates(statesData);
+      setLoadingStates(false);
+    };
+
+    loadStates();
+  }, []);
+
+  // Fetch cities when state changes
+  useEffect(() => {
+    const loadCities = async () => {
+      if (filters.state) {
+        setLoadingCities(true);
+        const citiesData = await fetchCities(filters.state);
+        setCities(citiesData);
+        setLoadingCities(false);
+        // Reset city filter when state changes
+        setFilters(prev => ({ ...prev, city: "" }));
+      } else {
+        setCities([]);
+      }
+    };
+
+    loadCities();
+  }, [filters.state]);
+
   // Apply filters whenever filters change
   useEffect(() => {
     let result = [...animals];
@@ -135,10 +171,17 @@ const Catalog = () => {
       );
     }
     
-    // Location filter
-    if (filters.location) {
+    // Location filter (state and city)
+    if (filters.state) {
+      const stateName = states.find(s => s.sigla === filters.state)?.nome || "";
       result = result.filter(animal => 
-        animal.location.toLowerCase().includes(filters.location.toLowerCase())
+        animal.location.includes(stateName) || animal.location.includes(filters.state)
+      );
+    }
+    
+    if (filters.city) {
+      result = result.filter(animal => 
+        animal.location.toLowerCase().includes(filters.city.toLowerCase())
       );
     }
     
@@ -153,7 +196,7 @@ const Catalog = () => {
     }
     
     setFilteredAnimals(result);
-  }, [filters, animals, searchQuery]);
+  }, [filters, animals, searchQuery, states]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -173,8 +216,8 @@ const Catalog = () => {
       size: "",
       age: "",
       gender: "",
-      location: "",
-      shelter: ""
+      state: "",
+      city: ""
     });
     setSearchQuery("");
   };
@@ -213,6 +256,17 @@ const Catalog = () => {
     tap: { scale: 0.98 }
   };
 
+  const selectVariants = {
+    rest: { y: 0 },
+    hover: { y: -2 },
+    tap: { y: 1 }
+  };
+
+  const inputVariants = {
+    rest: { boxShadow: "0 0 0 rgba(0, 0, 0, 0)" },
+    focus: { boxShadow: "0 0 0 3px rgba(37, 99, 235, 0.3)" }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <AnimatedNavigation />
@@ -244,55 +298,82 @@ const Catalog = () => {
                   <Label className="text-base">Buscar</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
-                    <Input
-                      placeholder="Nome, raça ou descrição..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 bg-background"
-                    />
+                    <motion.div
+                      variants={!reducedMotion ? inputVariants : {}}
+                      whileFocus={!reducedMotion ? "focus" : {}}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Input
+                        placeholder="Nome, raça ou descrição..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="pl-10 bg-background"
+                      />
+                    </motion.div>
                   </div>
                 </motion.div>
                 
                 <motion.div variants={itemVariants}>
                   <Label className="text-base">Espécie</Label>
-                  <Select value={filters.species} onValueChange={(value) => handleFilterChange("species", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="cachorro">Cachorro</SelectItem>
-                      <SelectItem value="gato">Gato</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <motion.div
+                    variants={!reducedMotion ? selectVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Select value={filters.species} onValueChange={(value) => handleFilterChange("species", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="cachorro">Cachorro</SelectItem>
+                        <SelectItem value="gato">Gato</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
                 </motion.div>
                 
                 <motion.div variants={itemVariants}>
                   <Label className="text-base">Porte</Label>
-                  <Select value={filters.size} onValueChange={(value) => handleFilterChange("size", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pequeno">Pequeno</SelectItem>
-                      <SelectItem value="medio">Médio</SelectItem>
-                      <SelectItem value="grande">Grande</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <motion.div
+                    variants={!reducedMotion ? selectVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Select value={filters.size} onValueChange={(value) => handleFilterChange("size", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pequeno">Pequeno</SelectItem>
+                        <SelectItem value="medio">Médio</SelectItem>
+                        <SelectItem value="grande">Grande</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
                 </motion.div>
                 
                 <motion.div variants={itemVariants}>
                   <Label className="text-base">Idade</Label>
-                  <Select value={filters.age} onValueChange={(value) => handleFilterChange("age", value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="filhote">Filhote (0-1 ano)</SelectItem>
-                      <SelectItem value="jovem">Jovem (1-3 anos)</SelectItem>
-                      <SelectItem value="adulto">Adulto (3-8 anos)</SelectItem>
-                      <SelectItem value="idoso">Idoso (+8 anos)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <motion.div
+                    variants={!reducedMotion ? selectVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Select value={filters.age} onValueChange={(value) => handleFilterChange("age", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="filhote">Filhote (0-1 ano)</SelectItem>
+                        <SelectItem value="jovem">Jovem (1-3 anos)</SelectItem>
+                        <SelectItem value="adulto">Adulto (3-8 anos)</SelectItem>
+                        <SelectItem value="idoso">Idoso (+8 anos)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
                 </motion.div>
                 
                 <motion.div variants={itemVariants}>
@@ -340,13 +421,71 @@ const Catalog = () => {
                 </motion.div>
                 
                 <motion.div variants={itemVariants}>
-                  <Label className="text-base">Localização</Label>
-                  <Input 
-                    placeholder="Cidade, Estado" 
-                    value={filters.location}
-                    onChange={(e) => handleFilterChange("location", e.target.value)}
-                    className="bg-background"
-                  />
+                  <Label className="text-base">Estado</Label>
+                  <motion.div
+                    variants={!reducedMotion ? selectVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Select 
+                      value={filters.state} 
+                      onValueChange={(value) => handleFilterChange("state", value)}
+                      disabled={loadingStates}
+                    >
+                      <SelectTrigger>
+                        {loadingStates ? (
+                          <div className="flex items-center">
+                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            Carregando...
+                          </div>
+                        ) : (
+                          <SelectValue placeholder="Selecione um estado" />
+                        )}
+                      </SelectTrigger>
+                      <SelectContent>
+                        {states.map((state) => (
+                          <SelectItem key={state.id} value={state.sigla}>
+                            {state.nome}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
+                </motion.div>
+                
+                <motion.div variants={itemVariants}>
+                  <Label className="text-base">Cidade</Label>
+                  <motion.div
+                    variants={!reducedMotion ? selectVariants : {}}
+                    whileHover={!reducedMotion ? "hover" : {}}
+                    whileTap={!reducedMotion ? "tap" : {}}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <Select 
+                      value={filters.city} 
+                      onValueChange={(value) => handleFilterChange("city", value)}
+                      disabled={loadingCities || !filters.state}
+                    >
+                      <SelectTrigger>
+                        {loadingCities ? (
+                          <div className="flex items-center">
+                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            Carregando...
+                          </div>
+                        ) : (
+                          <SelectValue placeholder={filters.state ? "Selecione uma cidade" : "Selecione um estado primeiro"} />
+                        )}
+                      </SelectTrigger>
+                      <SelectContent>
+                        {cities.map((city) => (
+                          <SelectItem key={city.id} value={city.nome}>
+                            {city.nome}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </motion.div>
                 </motion.div>
                 
                 <motion.div 
