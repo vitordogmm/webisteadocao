@@ -14,15 +14,12 @@ import {
   Plus,
   BarChart3,
   Search,
-  Filter,
   Eye,
-  Edit,
-  MessageCircle
+  Edit
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { Input } from "@/components/ui/input";
-import AnimalFilters from "@/components/animals/AnimalFilters";
 import AnimalForm from "@/components/animals/AnimalForm";
 import VisitScheduleModal from "@/components/applications/VisitScheduleModal";
 import ApplicationDetailsModal from "@/components/applications/ApplicationDetailsModal";
@@ -202,11 +199,7 @@ const ShelterDashboard = () => {
   const filteredAnimals = animals.filter(animal => {
     const matchesSearch = animal.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          animal.breed.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilters = Object.entries(animalFilters).every(([key, value]) => {
-      if (!value) return true;
-      return animal[key as keyof Animal] === value;
-    });
-    return matchesSearch && matchesFilters;
+    return matchesSearch;
   });
 
   const getStatusBadge = (status: string) => {
@@ -424,11 +417,6 @@ const ShelterDashboard = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
                     </div>
-                    <AnimalFilters 
-                      onApplyFilters={setAnimalFilters}
-                      onClearFilters={() => setAnimalFilters({})}
-                      currentFilters={animalFilters}
-                    />
                     <Button onClick={() => setShowAnimalForm(true)} className="bg-primary hover:bg-primary/90">
                       <Plus className="h-4 w-4 mr-2" />
                       Adicionar Animal
@@ -503,8 +491,8 @@ const ShelterDashboard = () => {
                   <div className="text-center py-8">
                     <Users className="h-12 w-12 mx-auto text-gray-400 mb-4" />
                     <p className="text-gray-600 dark:text-gray-300">
-                      {searchQuery || Object.keys(animalFilters).length > 0 
-                        ? "Nenhum animal encontrado com os filtros selecionados" 
+                      {searchQuery 
+                        ? "Nenhum animal encontrado com o termo pesquisado" 
                         : "Você ainda não cadastrou nenhum animal"
                       }
                     </p>
