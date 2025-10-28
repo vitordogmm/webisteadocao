@@ -141,43 +141,41 @@ const ConversationList = ({ userId, userType, onSelectConversation, selectedConv
                     }`}
                     onClick={() => onSelectConversation(conversation)}
                   >
-                    <CardContent className="p-4">
-                      <div className="flex items-start space-x-3">
-                        <Avatar>
-                          <AvatarImage src={otherParticipant?.avatar} />
-                          <AvatarFallback>
-                            {otherParticipant?.name?.charAt(0) || '?'}
-                          </AvatarFallback>
-                        </Avatar>
-                        
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
-                            <h3 className="font-semibold text-foreground truncate">
-                              {otherParticipant?.name}
-                            </h3>
-                            <span className="text-xs text-gray-500 ml-2">
-                              {conversation.lastMessage && formatTime(conversation.lastMessage.timestamp)}
-                            </span>
-                          </div>
-                          
-                          {conversation.animalName && (
-                            <div className="flex items-center text-xs text-gray-500 mb-1">
-                              <PawPrint className="h-3 w-3 mr-1" />
-                              {conversation.animalName}
-                            </div>
-                          )}
-                          
-                          <p className="text-sm text-gray-600 dark:text-gray-300 truncate">
-                            {conversation.lastMessage?.content}
-                          </p>
+                    <CardContent className="p-3 flex items-start space-x-3"> {/* Adjusted padding */}
+                      <Avatar>
+                        <AvatarImage src={otherParticipant?.avatar} />
+                        <AvatarFallback>
+                          {otherParticipant?.name?.charAt(0) || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="font-semibold text-foreground truncate">
+                            {otherParticipant?.name}
+                          </h3>
+                          <span className="text-xs text-gray-500 ml-2">
+                            {conversation.lastMessage && formatTime(conversation.lastMessage.timestamp)}
+                          </span>
                         </div>
                         
-                        {conversation.unreadCount > 0 && (
-                          <Badge variant="default" className="ml-2">
-                            {conversation.unreadCount}
-                          </Badge>
+                        {conversation.animalName && (
+                          <div className="flex items-center text-xs text-gray-500 mb-1">
+                            <PawPrint className="h-3 w-3 mr-1" />
+                            {conversation.animalName}
+                          </div>
                         )}
+                        
+                        <p className="text-sm text-gray-600 dark:text-gray-300 truncate">
+                          {conversation.lastMessage?.content}
+                        </p>
                       </div>
+                      
+                      {conversation.unreadCount > 0 && (
+                        <Badge variant="default" className="ml-2">
+                          {conversation.unreadCount}
+                        </Badge>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.div>
