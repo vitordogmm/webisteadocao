@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MessageCircle, Search, PawPrint } from 'lucide-react';
 import { Conversation } from '@/types/messaging';
 import { messagingService } from '@/services/messagingService';
+import { EmptyState } from './EmptyState';
 import { useAnimation } from '@/contexts/AnimationContext';
 
 interface ConversationListProps {
@@ -113,12 +114,7 @@ const ConversationList = ({ userId, userType, onSelectConversation, selectedConv
       {/* Conversations List */}
       <div className="flex-1 overflow-y-auto">
         {filteredConversations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-            <MessageCircle className="h-12 w-12 mb-4" />
-            <p className="text-center">
-              {searchQuery ? 'Nenhuma conversa encontrada' : 'Nenhuma conversa ainda'}
-            </p>
-          </div>
+          <EmptyState type="conversations" />
         ) : (
           <motion.div
             variants={containerVariants}
