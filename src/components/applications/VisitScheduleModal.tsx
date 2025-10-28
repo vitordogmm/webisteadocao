@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,35 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+
+  // Formatar número de WhatsApp
+  const formatWhatsAppNumber = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const cleaned = value.replace(/\D/g, '');
+    
+    // Se tiver 11 dígitos (DDI + número)
+    if (cleaned.length >= 11) {
+      const ddi = cleaned.slice(0, 2);
+      const ddd = cleaned.slice(2, 4);
+      const firstPart = cleaned.slice(4, 8);
+      const secondPart = cleaned.slice(8, 12);
+      
+      if (cleaned.length === 11) {
+        return `(${ddd}) ${firstPart}-${secondPart}`;
+      } else {
+        // Para números com DDI
+        return `+${ddi} (${ddd}) ${firstPart}-${secondPart}`;
+      }
+    }
+    
+    // Retorna o valor limpo se não tiver 11 dígitos
+    return cleaned;
+  };
+
+  const handleWhatsAppChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatWhatsAppNumber(e.target.value);
+    setWhatsapp(formatted);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +131,7 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
               <div className="space-y-2">
                 <Label htmlFor="time">Horário *</Label>
                 <Select value={time} onValueChange={setTime}>
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Selecione um horário" />
                   </SelectTrigger>
                   <SelectContent>
@@ -122,10 +151,12 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
                 <Input
                   id="whatsapp"
                   value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
+                  onChange={handleWhatsAppChange}
                   placeholder="(00) 00000-0000"
                   required
+                  maxLength={15}
                 />
+                <p className="text-xs text-gray-500">Digite o número com DDD</p>
               </div>
 
               <div className="space-y-2">
@@ -145,7 +176,7 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
                 </Button>
                 <Button 
                   type="submit" 
-                  className="flex-1 bg-primary hover:bg-primary/90"
+                  className="flex-1 bg-primary hover:bg-primary-90"
                   disabled={!date || !time || !whatsapp || isSubmitting}
                 >
                   {isSubmitting ? "Agendando..." : "Agendar Visita"}
