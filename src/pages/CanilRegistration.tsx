@@ -288,7 +288,7 @@ const CanilRegistration = () => {
                       required
                       className="bg-background"
                     />
-                  </div>
+                  </motion.div>
                   
                   <motion.div variants={itemVariants} className="space-y-2">
                     <Label htmlFor="cnpj" className="text-foreground">CNPJ</Label>
@@ -300,7 +300,7 @@ const CanilRegistration = () => {
                       placeholder="00.000.000/0000-00"
                       className="bg-background"
                     />
-                  </div>
+                  </motion.div>
                   
                   <motion.div variants={itemVariants} className="space-y-2">
                     <Label htmlFor="address" className="text-foreground">Endereço *</Label>
