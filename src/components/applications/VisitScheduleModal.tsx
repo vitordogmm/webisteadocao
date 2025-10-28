@@ -24,6 +24,7 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
   const [whatsapp, setWhatsapp] = useState("");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,100 +45,116 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Agendar Visita</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="applicant">Visitante</Label>
-              <Input
-                id="applicant"
-                value={applicantName}
-                disabled
-                className="bg-muted"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Data da Visita *</Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full pl-10 text-left font-normal"
-                  onClick={() => {}}
-                >
-                  {date ? format(date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione uma data"}
-                </Button>
-                <CalendarComponent
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  locale={ptBR}
-                  className="absolute top-full mt-1 z-10 bg-white border rounded-md shadow-lg"
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      {/* Background overlay */}
+      <div 
+        className="fixed inset-0 bg-black/50"
+        onClick={onCancel}
+      />
+      
+      {/* Modal content */}
+      <div className="relative z-[10000] w-full max-w-md">
+        <Card className="bg-background border border-border">
+          <CardHeader>
+            <CardTitle>Agendar Visita</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="applicant">Visitante</Label>
+                <Input
+                  id="applicant"
+                  value={applicantName}
+                  disabled
+                  className="bg-muted"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="time">Horário *</Label>
-              <Select value={time} onValueChange={setTime}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione um horário" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="09:00">09:00</SelectItem>
-                  <SelectItem value="10:00">10:00</SelectItem>
-                  <SelectItem value="11:00">11:00</SelectItem>
-                  <SelectItem value="14:00">14:00</SelectItem>
-                  <SelectItem value="15:00">15:00</SelectItem>
-                  <SelectItem value="16:00">16:00</SelectItem>
-                  <SelectItem value="17:00">17:00</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="date">Data da Visita *</Label>
+                <div className="relative">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal"
+                    onClick={() => setShowCalendar(!showCalendar)}
+                  >
+                    <Calendar className="mr-2 h-4 w-4" />
+                    {date ? format(date, "dd/MM/yyyy", { locale: ptBR }) : "Selecione uma data"}
+                  </Button>
+                  {showCalendar && (
+                    <div className="absolute top-full left-0 mt-1 z-[10001] bg-background border border-border rounded-md shadow-lg p-3">
+                      <CalendarComponent
+                        mode="single"
+                        selected={date}
+                        onSelect={(selectedDate) => {
+                          setDate(selectedDate);
+                          setShowCalendar(false);
+                        }}
+                        locale={ptBR}
+                        className="rounded-md border"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="whatsapp">WhatsApp *</Label>
-              <Input
-                id="whatsapp"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder="(00) 00000-0000"
-                required
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="time">Horário *</Label>
+                <Select value={time} onValueChange={setTime}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione um horário" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="09:00">09:00</SelectItem>
+                    <SelectItem value="10:00">10:00</SelectItem>
+                    <SelectItem value="11:00">11:00</SelectItem>
+                    <SelectItem value="14:00">14:00</SelectItem>
+                    <SelectItem value="15:00">15:00</SelectItem>
+                    <SelectItem value="16:00">16:00</SelectItem>
+                    <SelectItem value="17:00">17:00</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="notes">Observações</Label>
-              <Textarea
-                id="notes"
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Informações adicionais sobre a visita..."
-                rows={3}
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="whatsapp">WhatsApp *</Label>
+                <Input
+                  id="whatsapp"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
+                  placeholder="(00) 00000-0000"
+                  required
+                />
+              </div>
 
-            <div className="flex gap-2 pt-4">
-              <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
-                Cancelar
-              </Button>
-              <Button 
-                type="submit" 
-                className="flex-1 bg-primary hover:bg-primary/90"
-                disabled={!date || !time || !whatsapp || isSubmitting}
-              >
-                {isSubmitting ? "Agendando..." : "Agendar Visita"}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+              <div className="space-y-2">
+                <Label htmlFor="notes">Observações</Label>
+                <Textarea
+                  id="notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="Informações adicionais sobre a visita..."
+                  rows={3}
+                />
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+                  Cancelar
+                </Button>
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-primary hover:bg-primary/90"
+                  disabled={!date || !time || !whatsapp || isSubmitting}
+                >
+                  {isSubmitting ? "Agendando..." : "Agendar Visita"}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
