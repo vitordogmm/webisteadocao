@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Heart, FileText, Calendar, CheckCircle, Clock, XCircle, PawPrint } from "lucide-react";
+import { Heart, FileText, Calendar, CheckCircle, Clock, XCircle, PawPrint, MessageCircle, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { useAnimation } from "@/contexts/AnimationContext";
@@ -21,7 +21,9 @@ const AdopterDashboard = () => {
       breed: "Vira-lata",
       age: "2 anos",
       image: "/placeholder.svg?height=100&width=100",
-      shelter: "Abrigo Amor aos Animais"
+      shelter: "Abrigo Amor aos Animais",
+      shelterPhone: "(11) 99999-9999",
+      shelterWhatsApp: "5511999999999"
     },
     {
       id: 2,
@@ -29,7 +31,9 @@ const AdopterDashboard = () => {
       breed: "Siamês",
       age: "1 ano",
       image: "/placeholder.svg?height=100&width=100",
-      shelter: "Gatos Felizes"
+      shelter: "Gatos Felizes",
+      shelterPhone: "(21) 88888-8888",
+      shelterWhatsApp: "5521888888888"
     }
   ];
 
@@ -38,6 +42,8 @@ const AdopterDashboard = () => {
       id: 1,
       animalName: "Thor",
       shelter: "Abrigo Amor aos Animais",
+      shelterPhone: "(11) 99999-9999",
+      shelterWhatsApp: "5511999999999",
       date: "2023-10-15",
       status: "pending"
     },
@@ -45,6 +51,8 @@ const AdopterDashboard = () => {
       id: 2,
       animalName: "Bidu",
       shelter: "Cães da Rua",
+      shelterPhone: "(31) 77777-7777",
+      shelterWhatsApp: "5531777777777",
       date: "2023-10-10",
       status: "approved"
     },
@@ -52,6 +60,8 @@ const AdopterDashboard = () => {
       id: 3,
       animalName: "Mia",
       shelter: "Gatinhos Fofos",
+      shelterPhone: "(51) 66666-6666",
+      shelterWhatsApp: "5551666666666",
       date: "2023-10-05",
       status: "rejected"
     }
@@ -68,6 +78,17 @@ const AdopterDashboard = () => {
       default:
         return <Badge variant="secondary">Desconhecido</Badge>;
     }
+  };
+
+  const handleScheduleVisit = (application: any) => {
+    // Redirecionar para o WhatsApp do canil
+    const whatsappUrl = `https://wa.me/${application.shelterWhatsApp}?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20para%20conhecer%20o%20${application.animalName}.`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleCallShelter = (phone: string) => {
+    const telUrl = `tel:${phone.replace(/\D/g, '')}`;
+    window.location.href = telUrl;
   };
 
   const containerVariants = {
@@ -196,15 +217,42 @@ const AdopterDashboard = () => {
                                   <p className="text-sm text-gray-600 dark:text-gray-300">{animal.breed}, {animal.age}</p>
                                   <p className="text-sm text-gray-600 dark:text-gray-300">{animal.shelter}</p>
                                 </div>
-                                <motion.div
-                                  whileHover={!reducedMotion ? { scale: 1.05 } : {}}
-                                  whileTap={!reducedMotion ? { scale: 0.95 } : {}}
-                                  transition={{ type: "spring", stiffness: 400 }}
-                                >
-                                  <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
-                                    <Link to={`/animal/${animal.id}`}>Ver Perfil</Link>
-                                  </Button>
-                                </motion.div>
+                                <div className="flex flex-col gap-2">
+                                  <motion.div
+                                    whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                                    whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                                    transition={{ type: "spring", stiffness: 400 }}
+                                  >
+                                    <Button 
+                                      asChild 
+                                      size="sm" 
+                                      variant="outline"
+                                      onClick={() => handleCallShelter(animal.shelterPhone)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Phone className="h-3 w-3" />
+                                      Ligar
+                                    </Button>
+                                  </motion.div>
+                                  <motion.div
+                                    whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                                    whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                                    transition={{ type: "spring", stiffness: 400 }}
+                                  >
+                                    <Button 
+                                      asChild 
+                                      size="sm" 
+                                      className="bg-primary hover:bg-primary/90 flex items-center gap-1"
+                                      onClick={() => {
+                                        const whatsappUrl = `https://wa.me/${animal.shelterWhatsApp}?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20${animal.name}.`;
+                                        window.open(whatsappUrl, '_blank');
+                                      }}
+                                    >
+                                      <MessageCircle className="h-3 w-3" />
+                                      WhatsApp
+                                    </Button>
+                                  </motion.div>
+                                </div>
                               </CardContent>
                             </Card>
                           </motion.div>
@@ -277,17 +325,59 @@ const AdopterDashboard = () => {
                                   </div>
                                   <div className="flex items-center gap-2">
                                     {getStatusBadge(app.status)}
-                                    <motion.div
-                                      whileHover={!reducedMotion ? { scale: 1.05 } : {}}
-                                      whileTap={!reducedMotion ? { scale: 0.95 } : {}}
-                                      transition={{ type: "spring", stiffness: 400 }}
-                                    >
-                                      <Button variant="outline" size="sm">
-                                        <Calendar className="h-4 w-4 mr-1" />
-                                        Agendar Visita
-                                      </Button>
-                                    </motion.div>
+                                    {app.status === "pending" && (
+                                      <motion.div
+                                        whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                                        whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                                        transition={{ type: "spring", stiffness: 400 }}
+                                      >
+                                        <Button 
+                                          variant="outline" 
+                                          size="sm"
+                                          onClick={() => handleScheduleVisit(app)}
+                                          className="flex items-center gap-1"
+                                        >
+                                          <MessageCircle className="h-3 w-3" />
+                                          Agendar Visita
+                                        </Button>
+                                      </motion.div>
+                                    )}
                                   </div>
+                                </div>
+                                <div className="flex gap-2 mt-3">
+                                  <motion.div
+                                    whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                                    whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                                    transition={{ type: "spring", stiffness: 400 }}
+                                  >
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => handleCallShelter(app.shelterPhone)}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <Phone className="h-3 w-3" />
+                                      Ligar
+                                    </Button>
+                                  </motion.div>
+                                  <motion.div
+                                    whileHover={!reducedMotion ? { scale: 1.05 } : {}}
+                                    whileTap={!reducedMotion ? { scale: 0.95 } : {}}
+                                    transition={{ type: "spring", stiffness: 400 }}
+                                  >
+                                    <Button 
+                                      variant="outline" 
+                                      size="sm"
+                                      onClick={() => {
+                                        const whatsappUrl = `https://wa.me/${app.shelterWhatsApp}?text=Olá!%20Gostaria%20de%20conversar%20sobre%20a%20solicitação%20de%20adoção%20do%20${app.animalName}.`;
+                                        window.open(whatsappUrl, '_blank');
+                                      }}
+                                      className="flex items-center gap-1"
+                                    >
+                                      <MessageCircle className="h-3 w-3" />
+                                      WhatsApp
+                                    </Button>
+                                  </motion.div>
                                 </div>
                               </CardContent>
                             </Card>
@@ -309,7 +399,7 @@ const AdopterDashboard = () => {
                           transition={{ type: "spring", stiffness: 400 }}
                           className="mt-4"
                         >
-                          <Button asChild className="bg-primary hover:bg-primary/90">
+                          <Button asChild className="bg-primary hover:bg-primary-90">
                             <Link to="/catalog">Ver Animais Disponíveis</Link>
                           </Button>
                         </motion.div>
