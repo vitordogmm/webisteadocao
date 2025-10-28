@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "lucide-react";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { format } from "date-fns";
@@ -31,19 +30,13 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
     // Remove todos os caracteres não numéricos
     const cleaned = value.replace(/\D/g, '');
     
-    // Se tiver 11 dígitos (DDI + número)
+    // Se tiver 11 dígitos (DD + 5 + 4)
     if (cleaned.length >= 11) {
-      const ddi = cleaned.slice(0, 2);
-      const ddd = cleaned.slice(2, 4);
-      const firstPart = cleaned.slice(4, 8);
-      const secondPart = cleaned.slice(8, 12);
+      const dd = cleaned.slice(0, 2);
+      const firstPart = cleaned.slice(2, 7);
+      const secondPart = cleaned.slice(7, 11);
       
-      if (cleaned.length === 11) {
-        return `(${ddd}) ${firstPart}-${secondPart}`;
-      } else {
-        // Para números com DDI
-        return `+${ddi} (${ddd}) ${firstPart}-${secondPart}`;
-      }
+      return `(${dd}) ${firstPart}-${secondPart}`;
     }
     
     // Retorna o valor limpo se não tiver 11 dígitos
@@ -130,20 +123,14 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
 
               <div className="space-y-2">
                 <Label htmlFor="time">Horário *</Label>
-                <Select value={time} onValueChange={setTime}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione um horário" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="09:00">09:00</SelectItem>
-                    <SelectItem value="10:00">10:00</SelectItem>
-                    <SelectItem value="11:00">11:00</SelectItem>
-                    <SelectItem value="14:00">14:00</SelectItem>
-                    <SelectItem value="15:00">15:00</SelectItem>
-                    <SelectItem value="16:00">16:00</SelectItem>
-                    <SelectItem value="17:00">17:00</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input
+                  id="time"
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  required
+                  className="bg-background"
+                />
               </div>
 
               <div className="space-y-2">
@@ -152,11 +139,11 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
                   id="whatsapp"
                   value={whatsapp}
                   onChange={handleWhatsAppChange}
-                  placeholder="(00) 00000-0000"
+                  placeholder="(11) 99999-9999"
                   required
                   maxLength={15}
                 />
-                <p className="text-xs text-gray-500">Digite o número com DDD</p>
+                <p className="text-xs text-gray-500">Formato: (DD) XXXXX-XXXX</p>
               </div>
 
               <div className="space-y-2">
@@ -176,7 +163,7 @@ const VisitScheduleModal = ({ applicationId, applicantName, onSave, onCancel }: 
                 </Button>
                 <Button 
                   type="submit" 
-                  className="flex-1 bg-primary hover:bg-primary-90"
+                  className="flex-1 bg-primary hover:bg-primary/90"
                   disabled={!date || !time || !whatsapp || isSubmitting}
                 >
                   {isSubmitting ? "Agendando..." : "Agendar Visita"}
