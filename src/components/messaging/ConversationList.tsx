@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MessageCircle, Search, PawPrint } from 'lucide-react';
 import { Conversation } from '@/types/messaging';
 import { messagingService } from '@/services/messagingService';
-import { EmptyState } from './EmptyState';
+import EmptyState from './EmptyState';
 import { useAnimation } from '@/contexts/AnimationContext';
 
 interface ConversationListProps {

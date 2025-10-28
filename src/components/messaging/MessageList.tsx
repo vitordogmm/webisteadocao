@@ -6,7 +6,7 @@ import { Message } from '@/types/messaging';
 import { messagingService } from '@/services/messagingService';
 import { MessageBubble } from './MessageBubble';
 import { DateSeparator } from './DateSeparator';
-import { EmptyState } from './EmptyState';
+import EmptyState from './EmptyState';
 import { useAnimation } from '@/contexts/AnimationContext';
 
 interface MessageListProps {
