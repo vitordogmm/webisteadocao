@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Users, 
   FileText, 
-  MessageCircle, 
   Calendar, 
   CheckCircle, 
   Clock, 
@@ -192,24 +191,18 @@ const ShelterDashboard = () => {
           </Card>
           <Card className="bg-background">
             <CardContent className="p-6 text-center">
-              <MessageCircle className="h-10 w-10 mx-auto text-primary mb-2" />
-              <p className="text-2xl font-bold text-foreground">5</p>
-              <p className="text-gray-600 dark:text-gray-300">Mensagens Não Lidas</p>
+              <FileText className="h-10 w-10 mx-auto text-primary mb-2" />
+              <p className="text-2xl font-bold text-foreground">156</p>
+              <p className="text-gray-600 dark:text-gray-300">Animais Adotados</p>
             </CardContent>
           </Card>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="overview">Visão Geral</TabsTrigger>
             <TabsTrigger value="animals">Animais</TabsTrigger>
             <TabsTrigger value="applications">Solicitações</TabsTrigger>
-            <TabsTrigger value="messages">
-              Mensagens
-              <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
-                5
-              </Badge>
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -243,11 +236,11 @@ const ShelterDashboard = () => {
                     </div>
                     <div className="flex items-center p-4 bg-muted rounded-lg">
                       <div className="bg-purple-100 p-3 rounded-full mr-4 dark:bg-purple-900">
-                        <MessageCircle className="h-6 w-6 text-purple-600 dark:text-purple-300" />
+                        <CheckCircle className="h-6 w-6 text-purple-600 dark:text-purple-300" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-foreground">Nova mensagem</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Você tem uma nova mensagem de Maria Oliveira</p>
+                        <h3 className="font-bold text-foreground">Adoção finalizada</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Maria Oliveira adotou Luna com sucesso</p>
                       </div>
                     </div>
                   </div>
@@ -458,8 +451,8 @@ const ShelterDashboard = () => {
                               Ver Detalhes
                             </Button>
                             <Button variant="outline" size="sm">
-                              <MessageCircle className="h-4 w-4 mr-1" />
-                              Mensagens
+                              <Calendar className="h-4 w-4 mr-1" />
+                              Agendar Visita
                             </Button>
                           </TableCell>
                         </TableRow>
@@ -472,26 +465,6 @@ const ShelterDashboard = () => {
                     <p className="text-gray-600 dark:text-gray-300">Você não tem nenhuma solicitação de adoção</p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="messages">
-            <Card className="bg-background">
-              <CardHeader>
-                <CardTitle className="flex items-center text-foreground">
-                  <MessageCircle className="h-5 w-5 mr-2" />
-                  Mensagens
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8">
-                  <MessageCircle className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">Você tem 5 mensagens não lidas</p>
-                  <Button asChild className="bg-primary hover:bg-primary/90">
-                    <Link to="/messages">Ver Todas as Mensagens</Link>
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>

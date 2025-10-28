@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, FileText, Calendar, CheckCircle, Clock, XCircle, PawPrint } from "lucide-react";
+import { Heart, FileText, Calendar, CheckCircle, Clock, XCircle, PawPrint } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { useAnimation } from "@/contexts/AnimationContext";
@@ -146,15 +146,9 @@ const AdopterDashboard = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="favorites">Favoritos</TabsTrigger>
               <TabsTrigger value="applications">Solicitações</TabsTrigger>
-              <TabsTrigger value="messages">
-                Mensagens
-                <Badge variant="destructive" className="ml-2 h-5 w-5 p-0 flex items-center justify-center text-xs">
-                  2
-                </Badge>
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="favorites">
@@ -289,8 +283,8 @@ const AdopterDashboard = () => {
                                       transition={{ type: "spring", stiffness: 400 }}
                                     >
                                       <Button variant="outline" size="sm">
-                                        <MessageCircle className="h-4 w-4 mr-1" />
-                                        Mensagens
+                                        <Calendar className="h-4 w-4 mr-1" />
+                                        Agendar Visita
                                       </Button>
                                     </motion.div>
                                   </div>
@@ -321,43 +315,6 @@ const AdopterDashboard = () => {
                         </motion.div>
                       </motion.div>
                     )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-
-            <TabsContent value="messages">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="bg-background">
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-foreground">
-                      <MessageCircle className="h-5 w-5 mr-2" />
-                      Mensagens
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <motion.div 
-                      className="text-center py-8"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      <MessageCircle className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">Você tem 2 mensagens não lidas</p>
-                      <motion.div
-                        whileHover={!reducedMotion ? { scale: 1.05 } : {}}
-                        whileTap={!reducedMotion ? { scale: 0.95 } : {}}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        <Button asChild className="bg-primary hover:bg-primary/90">
-                          <Link to="/messages">Ver Todas as Mensagens</Link>
-                        </Button>
-                      </motion.div>
-                    </motion.div>
                   </CardContent>
                 </Card>
               </motion.div>
