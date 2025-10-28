@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Message } from '@/types/messaging';
 import { messagingService } from '@/services/messagingService';
 import { MessageBubble } from './MessageBubble';
-import { DateSeparator } from './DateSeparator';
+import DateSeparator from './DateSeparator';
 import EmptyState from './EmptyState';
 import { useAnimation } from '@/contexts/AnimationContext';
 
