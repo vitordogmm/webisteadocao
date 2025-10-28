@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
@@ -189,84 +188,18 @@ const CanilRegistration = () => {
     navigate("/");
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const pawPrintVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: { 
-      scale: 1, 
-      opacity: 0.1,
-      transition: { 
-        type: "spring", 
-        stiffness: 300
-      }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Decorative paw prints */}
-      <motion.div 
-        className="absolute top-20 right-20 opacity-10"
-        initial="hidden"
-        animate="visible"
-        variants={pawPrintVariants}
-        transition={{ delay: 0.2 }}
-      >
-        <PawPrint className="w-16 h-16 text-primary" />
-      </motion.div>
-      
-      <motion.div 
-        className="absolute bottom-40 left-10 opacity-10"
-        initial="hidden"
-        animate="visible"
-        variants={pawPrintVariants}
-        transition={{ delay: 0.4 }}
-      >
-        <PawPrint className="w-12 h-12 text-primary" />
-      </motion.div>
-      
+    <div className="min-h-screen bg-background">
       <Navigation />
-      <div className="container mx-auto px-4 py-8 relative">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8"
-        >
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Cadastro de Canil</h1>
           <p className="text-gray-600 dark:text-gray-300">
             Cadastre seu canil para começar a conectar animais com famílias amorosas
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div 
-          className="max-w-4xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+        <div className="max-w-4xl mx-auto">
           <Card className="bg-background">
             <CardHeader>
               <CardTitle className="flex items-center text-foreground">
@@ -277,7 +210,7 @@ const CanilRegistration = () => {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="name" className="text-foreground">Nome do Canil *</Label>
                     <Input
                       id="name"
@@ -288,9 +221,9 @@ const CanilRegistration = () => {
                       required
                       className="bg-background"
                     />
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="cnpj" className="text-foreground">CNPJ</Label>
                     <Input
                       id="cnpj"
@@ -300,9 +233,9 @@ const CanilRegistration = () => {
                       placeholder="00.000.000/0000-00"
                       className="bg-background"
                     />
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="address" className="text-foreground">Endereço *</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -329,9 +262,9 @@ const CanilRegistration = () => {
                         ))}
                       </div>
                     )}
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="state" className="text-foreground">Estado *</Label>
                     <Select value={formData.state} onValueChange={(value) => setFormData(prev => ({ ...prev, state: value }))}>
                       <SelectTrigger>
@@ -345,9 +278,9 @@ const CanilRegistration = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="city" className="text-foreground">Cidade *</Label>
                     <Select value={formData.city} onValueChange={(value) => setFormData(prev => ({ ...prev, city: value }))}>
                       <SelectTrigger>
@@ -361,9 +294,9 @@ const CanilRegistration = () => {
                         ))}
                       </SelectContent>
                     </Select>
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="phone" className="text-foreground">Telefone *</Label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -377,9 +310,9 @@ const CanilRegistration = () => {
                         className="pl-10 bg-background"
                       />
                     </div>
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="email" className="text-foreground">Email *</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -394,9 +327,9 @@ const CanilRegistration = () => {
                         className="pl-10 bg-background"
                       />
                     </div>
-                  </motion.div>
+                  </div>
                   
-                  <motion.div variants={itemVariants} className="space-y-2">
+                  <div className="space-y-2">
                     <Label htmlFor="website" className="text-foreground">Website</Label>
                     <div className="relative">
                       <Globe className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -409,10 +342,10 @@ const CanilRegistration = () => {
                         className="pl-10 bg-background"
                       />
                     </div>
-                  </motion.div>
+                  </div>
                 </div>
                 
-                <motion.div variants={itemVariants} className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="description" className="text-foreground">Descrição do Canil *</Label>
                   <Textarea
                     id="description"
@@ -424,9 +357,9 @@ const CanilRegistration = () => {
                     className="bg-background"
                     rows={4}
                   />
-                </motion.div>
+                </div>
                 
-                <motion.div variants={itemVariants} className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="mission" className="text-foreground">Missão do Canil *</Label>
                   <Textarea
                     id="mission"
@@ -438,12 +371,12 @@ const CanilRegistration = () => {
                     className="bg-background"
                     rows={3}
                   />
-                </motion.div>
+                </div>
                 
-                <motion.div variants={itemVariants} className="border-t pt-6">
+                <div className="border-t pt-6">
                   <h3 className="text-xl font-semibold mb-4 text-foreground">Redes Sociais</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <motion.div variants={itemVariants} className="space-y-2">
+                    <div className="space-y-2">
                       <Label htmlFor="facebook" className="text-foreground">Facebook</Label>
                       <div className="relative">
                         <Facebook className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -456,9 +389,9 @@ const CanilRegistration = () => {
                           className="pl-10 bg-background"
                         />
                       </div>
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants} className="space-y-2">
+                    <div className="space-y-2">
                       <Label htmlFor="instagram" className="text-foreground">Instagram</Label>
                       <div className="relative">
                         <Instagram className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -471,9 +404,9 @@ const CanilRegistration = () => {
                           className="pl-10 bg-background"
                         />
                       </div>
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants} className="space-y-2">
+                    <div className="space-y-2">
                       <Label htmlFor="whatsapp" className="text-foreground">WhatsApp</Label>
                       <div className="relative">
                         <MessageCircle className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -486,15 +419,15 @@ const CanilRegistration = () => {
                           className="pl-10 bg-background"
                         />
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div variants={itemVariants} className="border-t pt-6">
+                <div className="border-t pt-6">
                   <h3 className="text-xl font-semibold mb-4 text-foreground">Documentação</h3>
                   
                   <div className="space-y-6">
-                    <motion.div variants={itemVariants}>
+                    <div>
                       <Label className="text-foreground mb-2 block">Documento de Registro *</Label>
                       <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/50">
@@ -518,9 +451,9 @@ const CanilRegistration = () => {
                           Arquivo selecionado: {documents.registration.name}
                         </p>
                       )}
-                    </motion.div>
+                    </div>
                     
-                    <motion.div variants={itemVariants}>
+                    <div>
                       <Label className="text-foreground mb-2 block">Fotos das Instalações *</Label>
                       <div className="flex items-center justify-center w-full">
                         <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted hover:bg-muted/50">
@@ -552,11 +485,11 @@ const CanilRegistration = () => {
                           </ul>
                         </div>
                       )}
-                    </motion.div>
+                    </div>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div variants={itemVariants} className="border-t pt-6">
+                <div className="border-t pt-6">
                   <div className="flex items-start space-x-2">
                     <Checkbox
                       id="terms"
@@ -567,9 +500,9 @@ const CanilRegistration = () => {
                       Eu concordo com os <Link to="/terms" className="text-primary hover:underline">termos e condições</Link> e confirmo que todas as informações fornecidas são verdadeiras.
                     </Label>
                   </div>
-                </motion.div>
+                </div>
                 
-                <motion.div variants={itemVariants} className="flex justify-end pt-6">
+                <div className="flex justify-end pt-6">
                   <Button 
                     type="submit" 
                     className="bg-primary hover:bg-primary/90"
@@ -577,11 +510,11 @@ const CanilRegistration = () => {
                   >
                     Enviar Cadastro
                   </Button>
-                </motion.div>
+                </div>
               </form>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
