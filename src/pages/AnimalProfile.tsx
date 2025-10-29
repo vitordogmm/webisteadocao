@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,12 +8,14 @@ import { Heart, MapPin, Calendar, Ruler, VenetianMask, Phone, Mail, PawPrint } f
 import { Link } from "react-router-dom";
 import AnimatedNavigation from "@/components/AnimatedNavigation";
 import { useAnimation } from "@/contexts/AnimationContext";
+import AdoptionButton from "@/components/animals/AdoptionButton";
+import { Animal } from "@/types/animal";
 
 const AnimalProfile = () => {
   const { reducedMotion } = useAnimation();
   
   // Mock data for animal
-  const animal = {
+  const [animal] = useState<Animal>({
     id: 1,
     name: "Thor",
     species: "Cachorro",
@@ -37,6 +40,19 @@ const AnimalProfile = () => {
       phone: "(11) 99999-9999",
       email: "contato@abrigodoamor.com.br"
     }
+  });
+
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleAdopt = (animalId: number, applicationData: any) => {
+    console.log("Adoption requested for animal:", animalId, "with data:", applicationData);
+    // In a real app, this would send the application to the backend
+  };
+
+  const handleSave = (animalId: number) => {
+    console.log("Saving animal:", animalId);
+    setIsSaved(true);
+    // In a real app, this would save to user's favorites
   };
 
   const containerVariants = {
@@ -287,34 +303,11 @@ const AnimalProfile = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.5 }}
                   >
-                    <motion.div
-                      variants={!reducedMotion ? buttonVariants : {}}
-                      whileHover={!reducedMotion ? "hover" : {}}
-                      whileTap={!reducedMotion ? "tap" : {}}
-                      transition={{ type: "spring", stiffness: 400 }}
-                    >
-                      <Button className="w-full mb-2 bg-primary hover:bg-primary/90 relative">
-                        Quero Adotar
-                        <motion.div 
-                          className="absolute -top-2 -right-2"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ delay: 1.7, type: "spring" }}
-                        >
-                          <PawPrint className="w-5 h-5 text-white" />
-                        </motion.div>
-                      </Button>
-                    </motion.div>
-                    <motion.div
-                      variants={!reducedMotion ? buttonVariants : {}}
-                      whileHover={!reducedMotion ? "hover" : {}}
-                      whileTap={!reducedMotion ? "tap" : {}}
-                      transition={{ type: "spring", stiffness: 400 }}
-                    >
-                      <Button variant="outline" className="w-full">
-                        Salvar Animal
-                      </Button>
-                    </motion.div>
+                    <AdoptionButton 
+                      animal={animal}
+                      onAdopt={handleAdopt}
+                      onSave={handleSave}
+                    />
                   </motion.div>
                 </motion.div>
               </CardContent>
