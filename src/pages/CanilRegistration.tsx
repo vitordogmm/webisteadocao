@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { PawPrint, Upload, MapPin, Phone, Mail, Globe, Facebook, Instagram, MessageCircle } from "lucide-react";
-import { fetchStates, fetchCities, IBGEState, IBGECity } from "@/services/ibgeService";
+import { fetchStates, fetchCities, fetchAddressByCEP, BrasilAPIState, BrasilAPICity, BrasilAPIAddress } from "@/services/brasilapiService";
 
 const CanilRegistration = () => {
   const { toast } = useToast();
@@ -21,6 +21,7 @@ const CanilRegistration = () => {
     name: "",
     cnpj: "",
     address: "",
+    cep: "",
     city: "",
     state: "",
     phone: "",
@@ -39,12 +40,13 @@ const CanilRegistration = () => {
     facilityPhotos: [] as File[],
   });
 
-  const [states, setStates] = useState<IBGEState[]>([]);
-  const [cities, setCities] = useState<IBGECity[]>([]);
+  const [states, setStates] = useState<BrasilAPIState[]>([]);
+  const [cities, setCities] = useState<BrasilAPICity[]>([]);
   const [loadingStates, setLoadingStates] = useState(true);
   const [loadingCities, setLoadingCities] = useState(false);
   const [searchAddress, setSearchAddress] = useState("");
   const [addressSuggestions, setAddressSuggestions] = useState<any[]>([]);
+  const [loadingCEP, setLoadingCEP] = useState(false);
 
   // Fetch states on component mount
   useEffect(() => {
@@ -74,14 +76,42 @@ const CanilRegistration = () => {
     loadCities();
   }, [formData.state]);
 
-  // Mock address API (in a real app, you would use a proper address API)
+  // Search address by CEP
+  const searchAddressByCEP = async (cep: string) => {
+    if (cep.length !== 8) return;
+    
+    setLoadingCEP(true);
+    try {
+      const address = await fetchAddressByCEP(cep);
+      if (address) {
+        setFormData(prev => ({
+          ...prev,
+          cep: address.cep,
+          address: address.street,
+          city: address.city,
+          state: address.state
+        }));
+        setSearchAddress(address.street);
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "CEP não encontrado. Por favor, digite o endereço manualmente.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingCEP(false);
+    }
+  };
+
+  // Mock address suggestions (for street search)
   const searchAddressSuggestions = async (query: string) => {
     if (query.length < 3) {
       setAddressSuggestions([]);
       return;
     }
 
-    // Mock API response - in real app, use ViaCEP or similar
+    // Mock API response - in real app, you would use a proper address API
     const mockSuggestions = [
       { id: 1, label: "Rua dos Animais, 123 - Vila Mascote, São Paulo - SP, 04210-000" },
       { id: 2, label: "Avenida Paulista, 1000 - Bela Vista, São Paulo - SP, 01310-100" },
@@ -121,6 +151,11 @@ const CanilRegistration = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Auto-search address when CEP is entered
+    if (name === "cep" && value.length === 8) {
+      searchAddressByCEP(value);
+    }
   };
 
   const handleCheckboxChange = (checked: boolean) => {
@@ -236,6 +271,23 @@ const CanilRegistration = () => {
                   </div>
                   
                   <div className="space-y-2">
+                    <Label htmlFor="cep" className="text-foreground">CEP *</Label>
+                    <Input
+                      id="cep"
+                      name="cep"
+                      value={formData.cep}
+                      onChange={handleInputChange}
+                      placeholder="00000-000"
+                      maxLength={9}
+                      required
+                      className="bg-background"
+                    />
+                    {loadingCEP && (
+                      <p className="text-sm text-gray-500">Buscando endereço...</p>
+                    )}
+                  </div>
+                  
+                  <div className="space-y-2">
                     <Label htmlFor="address" className="text-foreground">Endereço *</Label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
@@ -244,7 +296,7 @@ const CanilRegistration = () => {
                         name="address"
                         value={searchAddress}
                         onChange={(e) => handleAddressSearch(e.target.value)}
-                        placeholder="Digite o endereço..."
+                        placeholder="Rua, número, complemento"
                         required
                         className="pl-10 bg-background"
                       />
