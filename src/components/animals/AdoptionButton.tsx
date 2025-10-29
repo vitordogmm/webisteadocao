@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PawPrint, Heart } from "lucide-react";
@@ -69,7 +70,7 @@ const AdoptionButton = ({ animal, onAdopt, onSave }: AdoptionButtonProps) => {
     <div className="flex gap-2">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button className="bg-primary hover:bg-primary/90 flex-1 relative">
+          <Button className="bg-primary hover:bg-primary-90 flex-1 relative">
             <PawPrint className="h-4 w-4 mr-2" />
             Quero Adotar
             <motion.div 
