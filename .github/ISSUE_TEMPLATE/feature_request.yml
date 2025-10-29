@@ -1,0 +1,66 @@
+name: ✨ Feature Request
+description: Sugerir uma nova funcionalidade para a plataforma
+title: "[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por sugerir uma nova funcionalidade! Por favor, preencha o formulário abaixo para nos ajudar a entender sua ideia.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição da Funcionalidade
+      description: Descreva a funcionalidade que você gostaria de ver
+      placeholder: Ex: Adicionar um filtro de animais por raça
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema que Resolve
+      description: Que problema essa funcionalidade resolveria?
+      placeholder: Ex: Atualmente é difícil encontrar animais de raça específica
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução Proposta
+      description: Como você imagina que essa funcionalidade funcionaria?
+      placeholder: |
+        1. Adicionar um dropdown de raças no filtro
+        2. Quando selecionada, mostrar apenas animais da raça escolhida
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas Consideradas
+      description: Você considerou alguma alternativa? Por quê?
+      placeholder: Ex: Poderia ser um campo de busca, mas dropdown é mais prático
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação que possa ser útil
+      placeholder: Ex: Isso seria muito útil para pessoas que têm preferência por raças específicas
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Você gostaria de contribuir com essa feature?
+      description: Se sim, por favor marque as opções abaixo
+      options:
+        - label: Sim, eu gostaria de implementar essa feature
+          required: false
+        - label: Sim, eu posso ajudar a testar
+          required: false
+        - label: Sim, eu posso ajudar a documentar
+          required: false

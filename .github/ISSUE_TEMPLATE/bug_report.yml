@@ -1,0 +1,81 @@
+name: 🐛 Bug Report
+description: Reportar um bug encontrado na aplicação
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar um bug! Por favor, preencha o formulário abaixo para nos ajudar a entender e resolver o problema.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do Bug
+      description: Descreva o problema que você encontrou
+      placeholder: Ex: O botão de adotar não funciona quando clico nele
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para Reproduzir
+      description: Descreva os passos para reproduzir o bug
+      placeholder: |
+        1. Vá para a página de catálogo
+        2. Clique em "Quero Adotar" em um animal
+        3. O modal não abre
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento Esperado
+      description: O que você esperava que acontecesse?
+      placeholder: Ex: O modal de adoção deveria abrir
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamento Atual
+      description: O que realmente aconteceu?
+      placeholder: Ex: O modal não abre e não há erro no console
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador
+      description: Qual navegador você estava usando?
+      placeholder: Chrome 120.0.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Sistema Operacional
+      description: Qual sistema operacional você estava usando?
+      placeholder: Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Capturas de Tela
+      description: Anexe capturas de tela se aplicável
+      placeholder: Arraste imagens aqui ou clique para fazer upload
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação que possa ser útil
+      placeholder: Ex: O problema acontece apenas no mobile

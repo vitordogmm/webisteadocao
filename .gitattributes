@@ -1,0 +1,10 @@
+# Configurações do Git
+*.text linguagem=typescript
+*.ts linguagem=typescript
+*.tsx linguagem=typescript
+*.js linguagem=javascript
+*.jsx linguagem=javascript
+*.json linguagem=json
+*.md linguagem=markdown
+*.yml linguagem=yaml
+*.yaml linguagem=yaml
