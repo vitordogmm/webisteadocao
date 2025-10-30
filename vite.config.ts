@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     dyadComponentTagger(),
     react({
-      jsxImportSource: "@emotion/react",
+      jsxImportSource: "react",
       tsDecorators: true,
     }),
   ],
