@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "name": "adota-pet-platform",
   "builds": [
     {
       "src": "vite.config.ts",

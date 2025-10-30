@@ -42,13 +42,18 @@ npm run dev
 
 ## 🚀 Deploy
 
-### Vercel
+### Vercel (Recomendado)
 
 1. Faça fork deste repositório
 2. Crie uma conta no [Vercel](https://vercel.com)
 3. Importe seu repositório
-4. Configure as variáveis de ambiente
+4. Configure as variáveis de ambiente (copie do `.env.example`)
 5. Deploy!
+
+Ou use o script:
+```bash
+npm run deploy:vercel
+```
 
 ### GitHub Pages
 
@@ -98,6 +103,8 @@ npm run test:coverage
 - `npm run lint` - Roda ESLint
 - `npm run type-check` - Verificação de tipos
 - `npm run format` - Formatação de código
+- `npm run deploy:vercel` - Deploy para Vercel
+- `npm run deploy:gh-pages` - Deploy para GitHub Pages
 
 ## 🤝 Contribuindo
 

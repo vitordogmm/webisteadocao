@@ -21,7 +21,7 @@
     "type": "git",
     "url": "https://github.com/seu-usuario/adota-pet-platform.git"
   },
-  "homepage": "https://adota-pet.vercel.app",
+  "homepage": "https://adota-pet-platform.vercel.app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -35,7 +35,8 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "deploy:gh-pages": "node scripts/deploy-gh-pages.js"
+    "deploy:gh-pages": "node scripts/deploy-gh-pages.js",
+    "deploy:vercel": "vercel --prod"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
